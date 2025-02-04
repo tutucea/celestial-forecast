@@ -5,7 +5,7 @@ To install you can either install exe provided or follow the instructions, creat
 
 Install Node.js: They can download and install Node.jsfrom the official website. This will also install npm (Node Package Manager) along with it.
 
-git clone https://github.com/tutucea/maya-forecast-app.git
+Download it by clicking on CODE and download as zip  .. or simply download all the files individually  or use git clone https://github.com/tutucea/maya-forecast-app.git
 
 cd maya-forecast-app
 
