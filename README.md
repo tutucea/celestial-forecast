@@ -5,7 +5,7 @@ To install you can either install exe provided or follow the instructions, creat
 
 Install Node.js: They can download and install Node.jsfrom the official website. This will also install npm (Node Package Manager) along with it.
 
-Download it by clicking on CODE and download as zip   .. or simply download all the files individually in the same folder  
+Download it by clicking on CODE and download as zip  https://github.com/tutucea/maya-forecast/archive/refs/heads/main.zip .. or simply download all the files individually in the same folder  
 
 cd maya-forecast-app
 
