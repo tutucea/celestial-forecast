@@ -21,3 +21,5 @@ link to download the exe if you are too lazy to build your own( notice windows m
 i also uploaded it here https://limewire.com/d/92cd1aee-f09b-4edc-b747-4f5e71c04905#i173LeL2FUg3sJcAkAqwKF7nDrdpP9S7INM12JE3ihY  ( i do not vouch for this website, so use at your own risk)
 
 this is what the app looks like https://ibb.co/4gfF8wz2
+
+p.s. this can also be installed on a mac ( not using the exe file) but creating your own DMG file while modifying package.json 
