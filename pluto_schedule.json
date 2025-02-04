@@ -1,0 +1,51 @@
+[
+    {
+        "timestamp": "2025-01-30T07:55:54+00:00",
+        "gate": "Gate 41",
+        "line": " 1",
+        "longitude": 302.0,
+        "motion": "direct"
+    },
+    {
+        "timestamp": "2025-03-02T22:09:26+00:00",
+        "gate": "Gate 41",
+        "line": " 2",
+        "longitude": 302.9375,
+        "motion": "direct"
+    },
+    {
+        "timestamp": "2025-07-10T07:19:10+00:00",
+        "gate": "Gate 41",
+        "line": " 1",
+        "longitude": 302.9375,
+        "motion": "retrograde"
+    },
+    {
+        "timestamp": "2025-08-20T08:57:41+00:00",
+        "gate": "Gate 60",
+        "line": " 6",
+        "longitude": 302.0,
+        "motion": "retrograde"
+    },
+    {
+        "timestamp": "2025-12-05T08:58:03+00:00",
+        "gate": "Gate 41",
+        "line": " 1",
+        "longitude": 302.0,
+        "motion": "direct"
+    },
+    {
+        "timestamp": "2026-01-08T03:18:15+00:00",
+        "gate": "Gate 41",
+        "line": " 2",
+        "longitude": 302.9375,
+        "motion": "direct"
+    },
+    {
+        "timestamp": "2026-02-06T15:34:07+00:00",
+        "gate": "Gate 41",
+        "line": " 3",
+        "longitude": 303.875,
+        "motion": "direct"
+    }
+]

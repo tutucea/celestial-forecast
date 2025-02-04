@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maia Forecast</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: black;
+    color: white;
+    padding: 10px;
+    margin: 0;
+    font-size: 1.3em; /* Slightly increased font size */
+    text-shadow: none; /* Ensures no shadows */
+}
+
+#datetime {
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-shadow: none; /* Remove unwanted text effects */
+}
+
+.activation, .countdown {
+    font-weight: normal;
+    text-align: left;
+    margin: 5px 0;
+    text-shadow: none;
+}
+
+.planet-section {
+    margin-bottom: 20px;
+}
+
+    </style>
+</head>
+<body>
+    <div id="datetime">-</div>
+
+    <div class="planet-section">
+        <!-- Moon Section -->
+        <div id="moon-current" class="activation">
+            <span>MOON: <span id="moon-current-activation">-</span></span>
+        </div>
+        <div class="countdown">⏳ <span id="moon-countdown-timer">-</span></div>
+        <div id="moon-next" class="activation">
+            <span>Next: <span id="moon-next-activation">-</span></span>
+        </div>
+    </div>
+
+    <div class="planet-section">
+        <!-- Sun Section -->
+        <div id="sun-current" class="activation">
+            <span>SUN: <span id="sun-current-activation">-</span></span>
+        </div>
+        <div class="countdown">⏳ <span id="sun-countdown-timer">-</span></div>
+        <div id="sun-next" class="activation">
+            <span>Next: <span id="sun-next-activation">-</span></span>
+        </div>
+    </div>
+
+    <div class="planet-section">
+        <!-- Nodes Section -->
+        <div id="-current" class="activation">
+            <span>NODES: <span id="nodes-current-activation">-</span></span>
+        </div>
+        <div class="countdown">⏳ <span id="nodes-countdown-timer">-</span></div>
+        <div id="nodes-next" class="activation">
+            <span>Next: <span id="nodes-next-activation">-</span></span>
+        </div>
+    </div>
+
+    <div class="planet-section">
+        <!-- Mercury Section -->
+        <div id="mercury-current" class="activation">
+            <span>MERCURY: <span id="mercury-current-activation">-</span></span>
+        </div>
+        <div class="countdown">⏳ <span id="mercury-countdown-timer">-</span></div>
+        <div id="mercury-next" class="activation">
+            <span>Next: <span id="mercury-next-activation">-</span></span>
+        </div>
+    </div>
+
+    <div class="planet-section">
+        <!-- Venus Section -->
+        <div id="venus-current" class="activation">
+            <span>VENUS: <span id="venus-current-activation">-</span></span>
+        </div>
+        <div class="countdown">⏳ <span id="venus-countdown-timer">-</span></div>
+        <div id="venus-next" class="activation">
+            <span>Next: <span id="venus-next-activation">-</span></span>
+        </div>
+    </div>
+
+    <div class="planet-section">
+        <!-- Mars Section -->
+        <div id="mars-current" class="activation">
+            <span>MARS: <span id="mars-current-activation">-</span></span>
+        </div>
+        <div class="countdown">⏳ <span id="mars-countdown-timer">-</span></div>
+        <div id="mars-next" class="activation">
+            <span>Next: <span id="mars-next-activation">-</span></span>
+        </div>
+    </div>
+
+    <div class="planet-section">
+        <!-- Jupiter Section -->
+        <div id="jupiter-current" class="activation">
+            <span>JUPITER: <span id="jupiter-current-activation">-</span></span>
+        </div>
+        <div class="countdown">⏳ <span id="jupiter-countdown-timer">-</span></div>
+        <div id="jupiter-next" class="activation">
+            <span>Next: <span id="jupiter-next-activation">-</span></span>
+        </div>
+    </div>
+
+    <div class="planet-section">
+        <!-- Saturn Section -->
+        <div id="saturn-current" class="activation">
+            <span>SATURN: <span id="saturn-current-activation">-</span></span>
+        </div>
+        <div class="countdown">⏳ <span id="saturn-countdown-timer">-</span></div>
+        <div id="saturn-next" class="activation">
+            <span>Next: <span id="saturn-next-activation">-</span></span>
+        </div>
+    </div>
+
+    <div class="planet-section">
+        <!-- Uranus Section -->
+        <div id="uranus-current" class="activation">
+            <span>URANUS: <span id="uranus-current-activation">-</span></span>
+        </div>
+        <div class="countdown">⏳ <span id="uranus-countdown-timer">-</span></div>
+        <div id="uranus-next" class="activation">
+            <span>Next: <span id="uranus-next-activation">-</span></span>
+        </div>
+    </div>
+
+    <div class="planet-section">
+        <!-- Neptune Section -->
+        <div id="neptune-current" class="activation">
+            <span>NEPTUNE: <span id="neptune-current-activation">-</span></span>
+        </div>
+        <div class="countdown">⏳ <span id="neptune-countdown-timer">-</span></div>
+        <div id="neptune-next" class="activation">
+            <span>Next: <span id="neptune-next-activation">-</span></span>
+        </div>
+    </div>
+
+    <div class="planet-section">
+        <!-- Pluto Section -->
+        <div id="-current" class="activation">
+            <span>PLUTO: <span id="pluto-current-activation">-</span></span>
+        </div>
+        <div class="countdown">⏳ <span id="pluto-countdown-timer">-</span></div>
+        <div id="pluto-next" class="activation">
+            <span>Next: <span id="pluto-next-activation">-</span></span>
+        </div>
+    </div>
+
+    
+
+    <script src="renderer1.js"></script>
+</body>
+</html>
