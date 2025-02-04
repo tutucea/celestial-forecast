@@ -22,4 +22,4 @@ i also uploaded it here https://limewire.com/d/92cd1aee-f09b-4edc-b747-4f5e71c04
 
 this is what the app looks like https://ibb.co/4gfF8wz2
 
-p.s. this can also be installed on a mac ( not using the exe file) but creating your own DMG file while modifying package.json 
+p.s. this can also be installed on a mac as long as you have node.js installed and following the instructions above 
