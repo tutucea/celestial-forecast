@@ -1,7 +1,7 @@
 # maya-forecast
 Human design transit tracker
 
-To install you can either install exe provided or install, create it yourself using the files provided
+To install you can either install exe provided or follow the instructions, create it yourself using the files provided where it can be customized any way you like :)
 
 Install Node.js: They can download and install Node.jsfrom the official website. This will also install npm (Node Package Manager) along with it.
 
