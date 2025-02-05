@@ -7,7 +7,7 @@ Install Node.js:  download and install Node.js from the official website https:/
 
 Download Maia-Forecast by clicking on CODE and download as zip  https://github.com/tutucea/maya-forecast/archive/refs/heads/main.zip .. or simply download all the files individually in the same folder  
 
-cd maya-forecast-app ( or whatever folder you downloaded to) by using a terminal (cmd for windows)
+"cd maya-forecast-app" ( or whatever folder you downloaded the files) by using a terminal (cmd for windows)
 
 "npm install"
 
