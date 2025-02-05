@@ -17,7 +17,7 @@ this means that everytime you want to run it you will have to use the terminal a
 
 
 
-link to download the EXE  file for easy install  here https://limewire.com/d/92cd1aee-f09b-4edc-b747-4f5e71c04905#i173LeL2FUg3sJcAkAqwKF7nDrdpP9S7INM12JE3ihY  ( i do not vouch for this website, so use at your own risk .. if you get a security pop-up click "more info" and "install anyways"... also feel free to use a virus scanner for peace of mind )
+Windows users only   here https://limewire.com/d/92cd1aee-f09b-4edc-b747-4f5e71c04905#i173LeL2FUg3sJcAkAqwKF7nDrdpP9S7INM12JE3ihY  .. if you get a security pop-up click "more info" and "install anyways"... also feel free to use a virus scanner for peace of mind 
 
 this is what the app looks like https://ibb.co/4gfF8wz2 and here https://ibb.co/N8NB5cL
 
