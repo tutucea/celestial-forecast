@@ -13,7 +13,7 @@ npm install
 
 npm start
 
-this means that everytime you want to run it you will have to use the terminal and cd into the directory and run npm start .... i will post more info later on how to install it for good on a mac or pc 
+this means that everytime you want to run it you will have to use the terminal and cd into the directory and run "npm start" .... i will post more info later on how to install it for good on a mac or pc 
 
 
 
