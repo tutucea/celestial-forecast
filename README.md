@@ -15,7 +15,7 @@ Download Maia-Forecast by clicking on CODE and download as zip  https://github.c
 
 This means that everytime you want to run it you will have to use the terminal and cd into the directory and run "npm start" .... 
 If you wish to create your own DMG or EXE  cd into the directory where you have all your files and run "npm run dist
-"  this will create a directory called dist, open it and find your dmg or exe file and install it yourself so you do not have to use the terminal every time you want to use it.
+" or "npm run build" this will create a directory called dist or build, open it and find your dmg or exe file and install it yourself so you do not have to use the terminal every time you want to use it.
 
 If you want to change the color, font, etc  edit "index.html", if you not happy with the times for the gate and line changes you can edit those too. Whatever makes you happy . If you mess it up no worries, you can come back here and redownload it.
 Good luck!!!!
