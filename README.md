@@ -1,7 +1,5 @@
 # maya-forecast
-Human design transit tracker for Moon, Sun, Nodes, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune and Pluto.
-
-This can be installed on Windows, Mac and Linux.
+Human design transit tracker. This can be installed on Windows, Mac and Linux.
 
 Install Node.js:  download and install Node.js from the official website https://nodejs.org/en/download. This will also install npm (Node Package Manager) along with it.
 
