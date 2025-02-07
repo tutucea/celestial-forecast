@@ -23,5 +23,5 @@ Windows users only ( the download link expires after 6 days as of Feb,5 2025) ht
 
 What it looks like, see here https://ibb.co/4gfF8wz2 and https://ibb.co/N8NB5cL
 
-If you see huge discrepancies or small with the dates and times please report them here or on facebook. Before you do so, please check for accuracy here https://ssd.jpl.nasa.gov/horizons/ or here https://www.astro.com/swisseph/swetest.htm
+If you see huge discrepancies with the dates and times, please report them here or on Facebook. Before you do so, please check for accuracy here or here.
 
