@@ -1,5 +1,5 @@
 # maya-forecast
-Human design transit tracker. This can be installed on Windows, Mac and Linux.
+Human design transit tracker. This can be used/installed on Windows, Mac and Linux.
 
 Download and install Node.js from the official website https://nodejs.org/en/download. This will also install npm (Node Package Manager) along with it.
 
