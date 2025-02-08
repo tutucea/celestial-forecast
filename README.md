@@ -3,7 +3,7 @@ Human design transit tracker. This can be used/installed on Windows, Mac and Lin
 
 Download and install Node.js from the official website https://nodejs.org/en/download. This will also install npm (Node Package Manager) along with it.
 
-Download Maia-Forecast by clicking on CODE and download as zip https://github.com/tutucea/maya-forecast .. or simply download all the files individually in the same folder  
+Download Maia-Forecast by clicking on "CODE"(colored in green) and download as zip https://github.com/tutucea/maya-forecast .. or simply download all the files individually in the same folder  
 
 "cd maya-forecast-app" ( or whatever folder you downloaded the files) by using a terminal (cmd for windows)
 
