@@ -1,0 +1,17 @@
+{
+  "name": "maya-forecast-app",
+  "version": "1.0.0",
+  "description": "hd line changes ",
+  "license": "ISC",
+  "author": "Ethan Johnson",
+  "type": "commonjs",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^34.0.2",
+    "electron-builder": "^25.1.8"
+  }
+}
