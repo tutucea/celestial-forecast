@@ -23,3 +23,6 @@ What it looks like, see here https://ibb.co/4gfF8wz2 and https://ibb.co/N8NB5cL
 
 If you see huge discrepancies or small with the dates and times, please report them here or on Facebook. Before you do so, please check for accuracy https://www.astro.com/swisseph/swetest.htm or https://ssd.jpl.nasa.gov/horizons/.
 
+
+P.S.****
+If  gate 25 line 3 is not accurate  or you see a discrepancy with 25.2 and 24.4 please re-download all the files as they been updated. Thank you!
