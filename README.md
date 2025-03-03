@@ -25,4 +25,4 @@ If you see huge discrepancies or small with the dates and times, please report t
 
 
 P.S.****
-If  gate 25 line 3 is not accurate  or you see a discrepancy with 25.2 and 24.4 please re-download all the files as they been updated. Thank you!
+March 2, 2025 fixed 25 gate bug
