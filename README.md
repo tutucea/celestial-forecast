@@ -25,4 +25,4 @@ If you see huge discrepancies or small with the dates and times, please report t
 
 
 P.S.****
-March 2, 2025 fixed 25 gate bug
+March 2, 2025 fixed gate 25 bug for Mercury
