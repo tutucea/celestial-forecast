@@ -24,5 +24,8 @@ What it looks like, see here https://ibb.co/4gfF8wz2 and https://ibb.co/N8NB5cL
 If you see huge discrepancies or small with the dates and times, please report them here or on Facebook. Before you do so, please check for accuracy https://www.astro.com/swisseph/swetest.htm or https://ssd.jpl.nasa.gov/horizons/.
 
 
-P.S.****
+*****edit****
 March 2, 2025 fixed gate 25 bug for Mercury
+
+
+"If you wish to add this application to your startup sequence, there are several methods. This is the approach I recommend: Press Win + R, type shell:startup, and press Enter. This will open the Startup folder. Place the start_electron.bat file into this folder. However, the file requires a minor edit, which can be done using Notepad in Windows. First, replace xxxx with your actual username and verify that the folder path to your application is correct. I have included the start_electron.bat file with the other application files."
