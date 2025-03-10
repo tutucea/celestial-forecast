@@ -17,9 +17,11 @@ Good luck!!!!
 
 
 
-Windows users only ( the download link expires after 6 days as of Feb,10 2025) https://filebin.net/k8lg8eusy64i8iiw .. if you get a security pop-up click "more info" and "install anyways"... also feel free to use a virus scanner for peace of mind. If the link expires follow the instructions above and make your own executable file.
+Android users only ( the download link expires after 6 days as of Mar,10 2025) https://filebin.net/dkw2i2x7588hjidp
+
 
 What it looks like, see here https://ibb.co/4gfF8wz2 and https://ibb.co/N8NB5cL
+
 
 If you see huge discrepancies or small with the dates and times, please report them here or on Facebook. Before you do so, please check for accuracy https://www.astro.com/swisseph/swetest.htm or https://ssd.jpl.nasa.gov/horizons/.
 
