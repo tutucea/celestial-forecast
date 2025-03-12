@@ -1,15 +1,15 @@
 # maya-forecast
-Human design transit tracker. This can be used/installed on Windows, Mac and Linux.
+Human Design Transit Tracker This application can be used/installed on Windows, Mac, and Linux.
 
-Download and install Node.js from the official website https://nodejs.org/en/download. This will also install npm (Node Package Manager) along with it.
+Download and install Node.js from the official website: https://nodejs.org/en/download. This will also install npm (Node Package Manager) alongside it.
 
-Download Maia-Forecast by clicking on "CODE"(colored in green) and download as zip https://github.com/tutucea/maya-forecast .. or simply download all the files individually in the same folder  
+Download Maia-Forecast by clicking on the green "CODE" button and selecting "Download ZIP" from https://github.com/tutucea/maya-forecast. Alternatively, you can download all the files individually and place them in the same folder.
 
-"cd maya-forecast-app" ( or whatever folder you downloaded the files) by using a terminal (cmd for windows)
+Open a terminal (or Command Prompt for Windows) and navigate to the folder where you downloaded the files by using the command: cd maya-forecast-app (replace "maya-forecast-app" with the actual folder name, if different).
 
-"npm install"
+Run the following command to install the required dependencies: npm install
 
-"npm start"
+Start the application by running: npm start
 
 Every time you want to run it, you will need to use the terminal, navigate to the directory (cd into it), and run "npm start". To create your own DMG or EXE, navigate to the directory where all your files are located and run "npm run dist" or "npm run build". This will generate a directory called dist or build—open it, locate your DMG or EXE file, and install it yourself.
 
