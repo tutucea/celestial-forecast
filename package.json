@@ -1,7 +1,7 @@
 {
   "name": "maya-forecast-app",
-  "version": "1.0.0",
-  "description": "hd line changes ",
+  "version": "2.0.1",
+  "description": "HD transit tracker ",
   "license": "ISC",
   "author": "Ethan Johnson",
   "type": "commonjs",
