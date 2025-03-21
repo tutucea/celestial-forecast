@@ -15,7 +15,7 @@ Every time you want to run it, you will need to use the terminal, navigate to th
 
 
 
-This is what it looks like, see here https://ibb.co/4gfF8wz2 and https://ibb.co/N8NB5cL
+This is what it looks like, version 1 https://ibb.co/4gfF8wz2 and version 2 https://ibb.co/05psWLK
 
 
 If the times for the crossings do not align let me know. Before you do so, please check for accuracy https://www.astro.com/swisseph/swetest.htm or https://ssd.jpl.nasa.gov/horizons/.
