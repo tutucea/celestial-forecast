@@ -1,3 +1,5 @@
+console.log('renderer.js loaded');
+
 const oppositeGates = {
   13: 7, 7: 13, 49: 4, 4: 49, 30: 29, 29: 30, 55: 59, 59: 55,
   37: 40, 40: 37, 63: 64, 64: 63, 22: 47, 47: 22, 36: 6, 6: 36,
@@ -10,12 +12,14 @@ const oppositeGates = {
   61: 62, 62: 61, 38: 39, 39: 38, 41: 31, 19: 33
 };
 
+const lastActivations = {};
+
 function findOppositeGate(gate) {
   const numericGate = parseInt(gate.toString().replace(/\D/g, ''), 10);
   return oppositeGates[numericGate] || null;
 }
 
-async function updateDisplay() {
+async function updateDisplay(isFirstRun = false) {
   try {
       const now = new Date();
       document.getElementById('datetime').textContent = formatTime(now);
@@ -34,58 +38,58 @@ async function updateDisplay() {
       const plutoSchedule = await window.electronAPI.getPlutoSchedule();
 
       // Process Moon
-      processSchedule(moonSchedule, 'moon', now);
+      processSchedule(moonSchedule, 'moon', now, null, isFirstRun);
 
       // Process Sun
-      processSchedule(sunSchedule, 'sun', now);
+      processSchedule(sunSchedule, 'sun', now, null, isFirstRun);
 
       // Create and process Earth schedule (synced with Sun)
       const earthSchedule = sunSchedule.map(activation => ({
           ...activation,
           gate: findOppositeGate(activation.gate)
       })).filter(activation => activation.gate !== null);
-      processSchedule(earthSchedule, 'earth', now, sunSchedule);
+      processSchedule(earthSchedule, 'earth', now, sunSchedule, isFirstRun);
 
       // Process North Node
-      processSchedule(nodesSchedule, 'nodes', now);
+      processSchedule(nodesSchedule, 'nodes', now, null, isFirstRun);
 
       // Create and process South Node schedule (synced with North Node)
       const southNodeSchedule = nodesSchedule.map(activation => ({
           ...activation,
           gate: findOppositeGate(activation.gate)
       })).filter(activation => activation.gate !== null);
-      processSchedule(southNodeSchedule, 'southnode', now, nodesSchedule);
+      processSchedule(southNodeSchedule, 'southnode', now, nodesSchedule, isFirstRun);
 
       // Process Mercury
-      processSchedule(mercurySchedule, 'mercury', now);
+      processSchedule(mercurySchedule, 'mercury', now, null, isFirstRun);
 
       // Process Venus
-      processSchedule(venusSchedule, 'venus', now);
+      processSchedule(venusSchedule, 'venus', now, null, isFirstRun);
 
       // Process Mars
-      processSchedule(marsSchedule, 'mars', now);
+      processSchedule(marsSchedule, 'mars', now, null, isFirstRun);
 
       // Process Jupiter
-      processSchedule(jupiterSchedule, 'jupiter', now);
+      processSchedule(jupiterSchedule, 'jupiter', now, null, isFirstRun);
 
       // Process Saturn
-      processSchedule(saturnSchedule, 'saturn', now);
+      processSchedule(saturnSchedule, 'saturn', now, null, isFirstRun);
 
       // Process Uranus
-      processSchedule(uranusSchedule, 'uranus', now);
+      processSchedule(uranusSchedule, 'uranus', now, null, isFirstRun);
 
       // Process Neptune
-      processSchedule(neptuneSchedule, 'neptune', now);
+      processSchedule(neptuneSchedule, 'neptune', now, null, isFirstRun);
 
       // Process Pluto
-      processSchedule(plutoSchedule, 'pluto', now);
+      processSchedule(plutoSchedule, 'pluto', now, null, isFirstRun);
 
   } catch (error) {
       console.error('Error:', error);
   }
 }
 
-function processSchedule(schedule, prefix, now, syncedSchedule = null) {
+function processSchedule(schedule, prefix, now, syncedSchedule = null, isFirstRun = false) {
   if (!schedule || !Array.isArray(schedule) || schedule.length === 0) {
       console.warn(`[WARNING] ${prefix} schedule is empty or invalid`);
       document.getElementById(`${prefix}-current-activation`).textContent = '-';
@@ -120,6 +124,19 @@ function processSchedule(schedule, prefix, now, syncedSchedule = null) {
       }
   }
 
+  // Notification logic
+  const activationKey = `${currentActivation?.gate}-${currentActivation?.line}-${currentActivation?.timestamp}`;
+  if (currentActivation) {
+      if (isFirstRun) {
+          // On first run, initialize lastActivations without notifying
+          lastActivations[prefix] = activationKey;
+      } else if (lastActivations[prefix] !== activationKey) {
+          // After first run, notify only on change
+          lastActivations[prefix] = activationKey;
+          showNotification(prefix, currentActivation);
+      }
+  }
+
   // Update UI elements
   console.log(`[UI UPDATE] ${prefix}-current:`, currentActivation?.gate);
   document.getElementById(`${prefix}-current-activation`).textContent = formatActivation(currentActivation);
@@ -140,6 +157,18 @@ function processSchedule(schedule, prefix, now, syncedSchedule = null) {
   document.getElementById(`${prefix}-countdown-timer`).textContent = formatCountdown(countdownNext, now);
 }
 
+function showNotification(prefix, activation) {
+    const planetName = prefix.toUpperCase();
+    const message = `${planetName} shifted to Gate ${activation.gate}, line ${activation.line}`;
+
+    // Send to system notification
+    window.electronAPI.showNotification(planetName, message);
+
+    // Play sound
+    const audio = new Audio('sounds/notification.mp3');
+    audio.play().catch(err => console.error('Audio playback failed:', err));
+}
+
 function parseTimestamp(timestamp) {
   if (!timestamp) return null;
   return new Date(timestamp);
@@ -147,14 +176,14 @@ function parseTimestamp(timestamp) {
 
 function formatActivation(activation) {
   if (!activation || !activation.gate || !activation.line || !activation.timestamp) return '-';
-  // Clean the gate value by removing "Gate" and any non-digits, then convert to a number
   const cleanGate = parseInt(activation.gate.toString().replace(/\D/g, ''), 10);
-  const gateLine = `${cleanGate}.${String(activation.line).trim()}`; // Use the cleaned gate value
+  const gateLine = `${cleanGate}.${String(activation.line).trim()}`;
   const dateTime = `${formatDate(activation.timestamp)} ${formatTime(activation.timestamp)}`;
   const result = `${gateLine} ${dateTime}`;
   console.log(`[formatActivation] Output for gate ${activation.gate}: ${result}`);
   return result;
 }
+
 function formatCountdown(nextActivation, now) {
   if (!nextActivation || !nextActivation.timestamp) return '-';
   const timeUntilNext = parseTimestamp(nextActivation.timestamp) - now;
@@ -185,5 +214,6 @@ function formatTime(timestamp) {
   }) : '-';
 }
 
-updateDisplay();
-setInterval(updateDisplay, 1000);
+// Run once on startup with isFirstRun true, then every second without it
+updateDisplay(true);
+setInterval(() => updateDisplay(false), 1000);
