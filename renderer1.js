@@ -159,7 +159,7 @@ function processSchedule(schedule, prefix, now, syncedSchedule = null, isFirstRu
 
 function showNotification(prefix, activation) {
     const planetName = prefix.toUpperCase();
-    const message = `${planetName} shifted to Gate ${activation.gate}, line ${activation.line}`;
+    const message = `${planetName} moved to ${activation.gate}, line ${activation.line}`;
 
     // Send to system notification
     window.electronAPI.showNotification(planetName, message);
