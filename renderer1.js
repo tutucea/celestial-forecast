@@ -177,8 +177,8 @@ function parseTimestamp(timestamp) {
 function formatActivation(activation) {
   if (!activation || !activation.gate || !activation.line || !activation.timestamp) return '-';
   const cleanGate = parseInt(activation.gate.toString().replace(/\D/g, ''), 10);
-  const gateLine = `${cleanGate}.${String(activation.line).trim()}`;
-  const dateTime = `${formatDate(activation.timestamp)} ${formatTime(activation.timestamp)}`;
+  const gateLine = `${cleanGate}.${String(activation.line).trim()} :`; // ": " after xx.x
+  const dateTime = `${formatDate(activation.timestamp)}, ${formatTime(activation.timestamp)}`; // Added comma after date
   const result = `${gateLine} ${dateTime}`;
   console.log(`[formatActivation] Output for gate ${activation.gate}: ${result}`);
   return result;
