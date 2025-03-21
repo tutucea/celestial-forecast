@@ -1,4 +1,4 @@
-console.log('renderer.js loaded');
+console.log('renderer1.js loaded');
 
 const oppositeGates = {
   13: 7, 7: 13, 49: 4, 4: 49, 30: 29, 29: 30, 55: 59, 59: 55,
