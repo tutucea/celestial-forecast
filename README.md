@@ -5,9 +5,9 @@ Download and install Node.js from the official website: https://nodejs.org/en/do
 
 Download Maia-Forecast by clicking on the green "CODE" button and selecting "Download ZIP" from https://github.com/tutucea/maya-forecast. Alternatively, you can download all the files individually and place them in the same folder.
 
-Open a terminal (or Command Prompt for Windows) and navigate to the folder where you downloaded the files by using the command: cd maya-forecast-app (replace "maya-forecast-app" with the actual folder name, if different).
+Open a terminal (or Command Prompt for Windows) and navigate inside the folder where you downloaded the files by using the command: cd maya-forecast-app (replace "maya-forecast-app" with the actual folder name, if different).
 
-Run the following command to install the required dependencies: npm install
+Run the following command to install the required dependencies(ignore all the deprecated messages): npm install
 
 Start the application by running: npm start
 
