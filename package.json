@@ -1,7 +1,8 @@
 {
-  "name": "maya-forecast-app",
+  "name": "celestial-forecast-app",
+  "productName": "Celestial Forecast",
   "version": "2.0.1",
-  "description": "HD transit tracker ",
+  "description": "Celestial Forecast",
   "license": "ISC",
   "author": "Ethan Johnson",
   "type": "commonjs",
