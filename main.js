@@ -2,9 +2,14 @@ const { app, BrowserWindow, ipcMain, Notification } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
+// Set the app name explicitly
+app.setName('Celestial Forecast');
+app.setAppUserModelId('Celestial Forecast');
+console.log('App name set to:', app.getName());
+
 function createWindow() {
   const win = new BrowserWindow({
-    width: 350,
+    width: 375,
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
