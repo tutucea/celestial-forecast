@@ -5,7 +5,6 @@ const fs = require('fs');
 // Set the app name explicitly
 app.setName('Celestial Forecast');
 app.setAppUserModelId('Celestial Forecast');
-console.log('App name set to:', app.getName());
 
 function createWindow() {
   const win = new BrowserWindow({
