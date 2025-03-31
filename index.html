@@ -5,33 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Celestial Forecast</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: black;
-            color: white;
-            padding: 20px;
-            margin: 0;
-            font-size: 1.2em;
-        }
-        #datetime {
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-        .planet-section {
-            margin-bottom: 5px; /* Reduced from 25px to 5px to minimize the gap */
-        }
-        .countdown, .current-activation, .next-activation {
-            margin: 0; /* Removed margin to tighten the rows within each section */
-            text-align: left;
-        }
-        .countdown {
-            color: #00ff00; /* Green for countdown visibility */
-        }
-        .label {
-            font-weight: bold;
-            margin-right: 5px;
-        }
-    </style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: black;
+        color: white;
+        padding: 20px;
+        margin: 0;
+        font-size: 1.2em;
+    }
+    #datetime {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .planet-section {
+        margin-bottom: 5px; /* Reduced from 25px to 5px to minimize the gap */
+    }
+    .countdown, .current-activation, .next-activation {
+        margin: 0; /* Removed margin to tighten the rows within each section */
+        text-align: left;
+    }
+    .countdown {
+        color: #00ff00; /* Green for countdown visibility */
+    }
+    .label {
+        font-weight: bold;
+        margin-right: 5px;
+    }
+    /* Add these new styles */
+    .next-activation {
+        font-size: 17px;
+        color: #bbbbbb; /* Light grey color */
+    }
+</style>
+          
 </head>
 <body>
     <div id="datetime">-</div>
