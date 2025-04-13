@@ -24,3 +24,4 @@ If the times for the crossings do not align let me know. Before you do so, pleas
 
 
 Now comes with notification to the system as the  lines change ( similar to MMI) 3/21/2025
+If you wish to have a different notification sound, create a folder called 'sounds' inside the 'maya-forecast-app' directory, and place your new notification sound in that folder. Just make sure to name it 'notification.mp3'.
