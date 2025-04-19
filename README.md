@@ -11,7 +11,7 @@ Run the following command to install the required dependencies(ignore all the de
 
 Start the application by running:     npm start
 
-Every time you want to run it, you will need to use the terminal, navigate to the directory (cd into it), and run "npm start". To create your own DMG or EXE, navigate to the directory where all your files are located and run "npm run dist" or "npm run build". This will generate a directory called dist or build—open it, locate your DMG or EXE file, and install it YOURSELF.
+Every time you want to run it, you will need to use the terminal, navigate to the directory (cd into it), and run "npm start". To create your own DMG or EXE, navigate to the directory where all your files are located and run "npm run dist" or "npm run build". This will generate a directory called dist or build—open it, locate your DMG or EXE file, and install it.
 
 
 
