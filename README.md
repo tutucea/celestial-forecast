@@ -27,4 +27,4 @@ Now comes with notification to the system as the  lines change ( https://ibb.co/
 
 If you wish to have a different notification sound, create a folder called 'sounds' inside the 'maya-forecast-app' directory, and place your new notification sound in that folder. Just make sure to name it 'notification.mp3'.
 
-If you are using Linux(Ubuntu) you may have to run "sudo chown root chrome-sandbox && sudo chmod 4755 chrome-sandbox" before you run "npm start" for the first time.
+If you are using Linux(Ubuntu) you may have to run "sudo chown root chrome-sandbox && sudo chmod 4755 chrome-sandbox" before you run "npm start" for the first time or you will get this error https://pastebin.com/8kZ6Uwnp
