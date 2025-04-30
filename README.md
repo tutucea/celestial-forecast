@@ -7,9 +7,9 @@ Download Maia-Forecast by clicking on the green "CODE" button and selecting "Dow
 
 Open a terminal (or Command Prompt for Windows) and navigate inside the folder where you downloaded the files by using the command: cd maya-forecast-app (replace "maya-forecast-app" with the actual folder name, if different).
 
-Run the following command to install the required dependencies(ignore all the deprecated messages):    npm install
+Run the following command to install the required dependencies(ignore all the deprecated messages):    "npm install"
 
-Start the application by running:     npm start
+Start the application by running:     "npm start"
 
 Every time you want to run it, you will need to use the terminal, navigate to the directory (cd into it), and run "npm start". To create your own DMG or EXE, navigate to the directory where all your files are located and run "npm run dist" or "npm run build". This will generate a directory called dist or build—open it, locate your DMG or EXE file, and install it.
 
