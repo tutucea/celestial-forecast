@@ -36,6 +36,7 @@ async function updateDisplay(isFirstRun = false) {
       const uranusSchedule = await window.electronAPI.getUranusSchedule();
       const neptuneSchedule = await window.electronAPI.getNeptuneSchedule();
       const plutoSchedule = await window.electronAPI.getPlutoSchedule();
+      const chironSchedule = await window.electronAPI.getChironSchedule();
 
       // Process Moon
       processSchedule(moonSchedule, 'moon', now, null, isFirstRun);
@@ -83,6 +84,9 @@ async function updateDisplay(isFirstRun = false) {
 
       // Process Pluto
       processSchedule(plutoSchedule, 'pluto', now, null, isFirstRun);
+
+      //Process Chiron
+      processSchedule(chironSchedule, 'chiron', now, null, isFirstRun);
 
   } catch (error) {
       console.error('Error:', error);

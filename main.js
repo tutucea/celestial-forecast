@@ -37,6 +37,7 @@ app.whenReady().then(() => {
   ipcMain.handle('get-uranus-schedule', async () => loadSchedule('uranus_schedule.json'));
   ipcMain.handle('get-neptune-schedule', async () => loadSchedule('neptune_schedule.json'));
   ipcMain.handle('get-pluto-schedule', async () => loadSchedule('pluto_schedule.json'));
+  ipcMain.handle('get-chiron-schedule', async () => loadSchedule('chiron_schedule.json'))
 
   ipcMain.on('show-notification', (event, { title, body }) => {
     const notification = new Notification({

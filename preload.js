@@ -12,6 +12,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getUranusSchedule: () => ipcRenderer.invoke('get-uranus-schedule'),
   getNeptuneSchedule: () => ipcRenderer.invoke('get-neptune-schedule'),
   getPlutoSchedule: () => ipcRenderer.invoke('get-pluto-schedule'),
+  getChironSchedule: () => ipcRenderer.invoke('get-chiron-schedule'),
   showNotification: (title, body) => ipcRenderer.send('show-notification', { title, body })
 
 });
