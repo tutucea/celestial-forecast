@@ -8,8 +8,8 @@ app.setAppUserModelId('com.maia.celestialforecast');
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 375,
-    height: 600,
+    width: 355,
+    height: 700,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     }
