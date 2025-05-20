@@ -1,4 +1,4 @@
-# maia-forecast
+# celestial-forecast
 Human Design System Transits Tracker. This application can be used/installed on Windows, Mac, and Linux.
 
 Download and install Node.js from the official website: https://nodejs.org/en/download. This will also install npm (Node Package Manager) alongside it.
