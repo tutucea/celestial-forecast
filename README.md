@@ -2,7 +2,7 @@
 
 **Celestial-Forecast** is an open-source Electron app for tracking transits in the Human Design System. Monitor planetary movements and gate activations with real-time notifications for line changes. Perfect for Human Design enthusiasts, astrologers, and cosmic explorers, this app runs on Windows, macOS, and Linux.
 
-![Celestial-Forecast Screenshot](https://ibb.co/00Gq7T0)  
+![Celestial-Forecast Screenshot](https://ibb.co/RGLbVTq2)  
 *Track Human Design transits with an intuitive interface.*
 
 ## ✨ Features
