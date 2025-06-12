@@ -1,30 +1,60 @@
-# celestial-forecast
-Human Design System Transits Tracker. This application can be used/installed on Windows, Mac, and Linux.
+# Celestial-Forecast: Human Design Transits Tracker
 
-Download and install Node.js from the official website: https://nodejs.org/en/download. This will also install npm (Node Package Manager) alongside it.
+**Celestial-Forecast** is an open-source Electron app for tracking transits in the Human Design System. Monitor planetary movements and gate activations with real-time notifications for line changes. Perfect for Human Design enthusiasts, astrologers, and cosmic explorers, this app runs on Windows, macOS, and Linux.
 
-Download Maia-Forecast by clicking on the green "CODE" button and selecting "Download ZIP" from https://github.com/tutucea/maya-forecast. Alternatively, you can download all the files individually and place them in the same folder.
+![Celestial-Forecast Screenshot](https://ibb.co/00Gq7T0)  
+*Track Human Design transits with an intuitive interface.*
 
-Open a terminal (or Command Prompt for Windows) and navigate inside the folder where you downloaded the files by using the command: cd maya-forecast-app (replace "maya-forecast-app" with the actual folder name, if different).
+## ✨ Features
+- **Real-Time Transit Tracking**: Stay updated on Human Design gate and line transits with precise timing.
+- **System Notifications**: Receive alerts when lines change, with customizable notification sounds ([see example](https://ibb.co/xSLnLyn1)).  
+- **Cross-Platform**: Compatible with Windows, macOS, and Linux.
+- **Open-Source**: Free to use, modify, and contribute to under the [MIT License](#license).
+- **Custom Builds**: Generate DMG or EXE installers for easy distribution.
 
-Run the following command to install the required dependencies(ignore all the deprecated messages)   :    "npm install"
+## 🚀 Getting Started
 
-Start the application by running:     "npm start"
+### Prerequisites
+- **Node.js**: Install Node.js (includes npm) from [nodejs.org](https://nodejs.org/en/download).
 
-Every time you want to run it, you will need to use the terminal, navigate to the directory (cd into it), and run "npm start". To create your own DMG or EXE, navigate to the directory where all your files are located and run "npm run dist" or "npm run build". This will generate a directory called dist or build—open it, locate your DMG or EXE file, and install it.
+### Installation
+1. **Download Celestial-Forecast**:
+   - Click the green "CODE" button on the [GitHub repository](https://github.com/tutucea/maya-forecast) and select "Download ZIP".
+   - Or clone the repository:  
+     ```bash
+     git clone https://github.com/tutucea/maya-forecast.git
+     ```
+2. **Navigate to the Project Folder**:
+   - Open a terminal (or Command Prompt on Windows) and navigate to the project directory:  
+     ```bash
+     cd celestial-forecast
+     ```
+     *Note: Replace `celestial-forecast` with the actual folder name if different.*
 
+3. **Install Dependencies**:
+   - Run the following command to install required packages (ignore any deprecated warnings):  
+     ```bash
+     npm install
+     ```
 
+4. **Start the Application**:
+   - Launch the app with:  
+     ```bash
+     npm start
+     ```
 
-This is what it looks like,   https://ibb.co/00Gq7T0
+5. **Optional: Build a DMG/EXE**:
+   - To create an installer, run:  
+     ```bash
+     npm run dist
+     ```
+     or
+     ```bash
+     npm run build
+     ```
+   - Find the DMG (macOS) or EXE (Windows) in the `dist` or `build` folder and install it.
 
-
-If the times for the crossings do not align let me know. Before you do so, please check for accuracy https://www.astro.com/swisseph/swetest.htm or https://ssd.jpl.nasa.gov/horizons/.
-
-
-
-
-Now comes with notification to the system as the  lines change ( https://ibb.co/xSLnLyn1 ) 3/21/2025
-
-If you wish to have a different notification sound, create a folder called 'sounds' inside the 'maya-forecast-app' directory, and place your new notification sound in that folder. Just make sure to name it 'notification.mp3'.
-
-If you are using Linux(Ubuntu) you may have to run "sudo chown root chrome-sandbox && sudo chmod 4755 chrome-sandbox" before you run "npm start" for the first time or you will get this error https://pastebin.com/8kZ6Uwnp
+### Linux (Ubuntu) Users
+If you see a `chrome-sandbox` error (e.g., [this error](https://pastebin.com/8kZ6Uwnp)), run this before `npm start`:
+```bash
+sudo chown root chrome-sandbox && sudo chmod 4755 chrome-sandbox
