@@ -7,7 +7,7 @@ Celestial-Forecast Screenshot -  https://ibb.co/RGLbVTq2
 
 ## ✨ Features
 - **Real-Time Transit Tracking**: Stay updated on Human Design gate and line transits with precise timing.
-- **System Notifications**: Receive alerts when lines change, with customizable notification sounds ([see example](https://ibb.co/xSLnLyn1)).  
+- **System Notifications**: Receive alerts when lines change, with customizable notification sounds. See example -- https://ibb.co/V0NDL51g.  
 - **Cross-Platform**: Compatible with Windows, macOS, and Linux.
 - **Open-Source**: Free to use, modify, and contribute to under the [MIT License](#license).
 - **Custom Builds**: Generate DMG or EXE installers for easy distribution.
