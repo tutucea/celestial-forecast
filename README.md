@@ -15,7 +15,7 @@ Celestial-Forecast Screenshot -  https://ibb.co/RGLbVTq2
 ## 🚀 Getting Started
 
 ### Prerequisites
-- **Node.js**: Install Node.js (includes npm) from [nodejs.org](https://nodejs.org/en/download).
+- **Node.js**: Install Node.js (chose a prebuilt version for your system, includes npm) from [nodejs.org](https://nodejs.org/en/download).
 
 ### Installation
 1. **Download Celestial-Forecast**:
