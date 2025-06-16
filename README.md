@@ -69,7 +69,7 @@ You can also use your own notification sound—just make sure to name it notific
 
 Every time you want to run the program, open a terminal and navigate to the project directory:
 ```bash
-cd /celestial-forecast
+cd celestial-forecast/
 npm start
 ```
 
