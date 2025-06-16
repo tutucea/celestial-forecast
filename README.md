@@ -59,6 +59,7 @@ If you see a `chrome-sandbox` error (e.g., [this error](https://pastebin.com/8kZ
 ```bash
 sudo chown root chrome-sandbox && sudo chmod 4755 chrome-sandbox
 ```
+### Notes
 If you wish to change the notification sound, create a folder named "sounds" inside the directory where all the files are located, and place a file named notification.mp3 inside it.
 You can also use your own notification sound—just make sure to name it notification.mp3.
 
@@ -68,6 +69,8 @@ Every time you want to run the program, open a terminal and navigate to the proj
 cd /celestial-forecast
 npm start
 ```
+
+I do update the look once in a while also I will update the dates and times for all the crossings when they are about to expire.
 
 
 
