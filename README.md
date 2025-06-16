@@ -58,17 +58,17 @@ Celestial-Forecast Screenshot -  https://ibb.co/RGLbVTq2
 If you see a `chrome-sandbox` error (e.g., [this error](https://pastebin.com/8kZ6Uwnp)), run this before `npm start`:
 ```bash
 sudo chown root chrome-sandbox && sudo chmod 4755 chrome-sandbox
+```
+If you wish to change the notification sound, create a folder named "sounds" inside the directory where all the files are located, and place a file named notification.mp3 inside it.
+You can also use your own notification sound—just make sure to name it notification.mp3.
 
-## Notification Sound
-
-If you wish to change the notification sound, create a folder named `sounds` inside the directory where all the files are located, and place a file named `notification.mp3` inside it.  
-You can also use your own notification sound—just make sure to name it `notification.mp3`.
-
-## Running the Program
 
 Every time you want to run the program, open a terminal and navigate to the project directory:
-
 ```bash
 cd /celestial-forecast
 npm start
+```
+
+
+
 
