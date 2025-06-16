@@ -60,7 +60,7 @@ If you see a `chrome-sandbox` error (e.g., [this error](https://pastebin.com/8kZ
 sudo chown root chrome-sandbox && sudo chmod 4755 chrome-sandbox
 ```
 ### Accuracy 
-Please let me know if you see any discrepancies but before check this [Swiss Ephemeris - Swetest](https://www.astro.com/swisseph/swetest.htm)  
+Please let me know if you see any discrepancies but before check this [Swiss Ephemeris - Swetest](https://www.astro.com/swisseph/swetest.htm)  or 
 [JPL Horizons](https://ssd.jpl.nasa.gov/horizons/)
 ### Notes
 If you wish to change the notification sound, create a folder named "sounds" inside the directory where all the files are located, and place a file named notification.mp3 inside it.
