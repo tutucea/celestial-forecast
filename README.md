@@ -19,7 +19,7 @@ Celestial-Forecast Screenshot -  https://ibb.co/RGLbVTq2
 
 ### Installation
 1. **Download Celestial-Forecast**:
-   - Click the green "CODE" button on the [GitHub repository](https://github.com/tutucea/maya-forecast) and select "Download ZIP".
+   - Click the green "CODE" button on the [GitHub repository](https://github.com/tutucea/maya-forecast) and select "Download ZIP". Unzip it.
    - Or clone the repository:  
      ```bash
      git clone https://github.com/tutucea/maya-forecast.git
