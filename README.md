@@ -53,6 +53,22 @@ Celestial-Forecast Screenshot -  https://ibb.co/RGLbVTq2
      npm run build
      ```
    - Find the DMG (macOS) or EXE (Windows) in the `dist` or `build` folder and install it.
+  
+6. ## ✨ Detailed Planetary Schedule
+
+This application features a powerful, on-demand schedule viewer that provides in-depth transit data for each celestial body.
+
+### How it Works
+Simply click on any planet's symbol (e.g., ☉, ☽) in the main window to open a dedicated popup with its full schedule.
+
+### Key Features
+*   **On-Demand Data:** Instantly access a detailed data table for any planet without cluttering the main view.
+*   **Dynamic Timezone Conversion:** The schedule popup includes a robust timezone switcher. Users can instantly convert all timestamps to:
+    *   Their own **local time**, which is detected automatically.
+    *   **UTC** (Coordinated Universal Time).
+    *   A customizable list of major world timezones.
+*   **Comprehensive Information:** The table displays crucial data points for each transit, including Gate, Line, the exact Timestamp, Longitude, and Motion.
+*   **User-Friendly Interface:** The popup window includes controls to increase or decrease the text size for better readability.
 
 ### Linux (Ubuntu) Users
 If you see a `chrome-sandbox` error (e.g., [this error](https://pastebin.com/8kZ6Uwnp)), run this before `npm start`:
