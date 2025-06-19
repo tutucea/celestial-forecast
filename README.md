@@ -54,7 +54,7 @@ Celestial-Forecast Screenshot -  https://ibb.co/RGLbVTq2
      ```
    - Find the DMG (macOS) or EXE (Windows) in the `dist` or `build` folder and install it.
   
-6. ## ✨ Detailed Planetary Schedule
+6. ##  Detailed Planetary Schedule
 
 This application features a powerful, on-demand schedule viewer that provides in-depth transit data for each celestial body.
 
@@ -69,6 +69,7 @@ Simply click on any planet's symbol (e.g., ☉, ☽) in the main window to open 
     *   A customizable list of major world timezones.
 *   **Comprehensive Information:** The table displays crucial data points for each transit, including Gate, Line, the exact Timestamp, Longitude, and Motion.
 *   **User-Friendly Interface:** The popup window includes controls to increase or decrease the text size for better readability.
+*   https://ibb.co/tPp9TCn9
 
 ### Linux (Ubuntu) Users
 If you see a `chrome-sandbox` error (e.g., [this error](https://pastebin.com/8kZ6Uwnp)), run this before `npm start`:
