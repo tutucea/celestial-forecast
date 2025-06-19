@@ -1,18 +1,25 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
-contextBridge.exposeInMainWorld('electronAPI', {
-  getMoonSchedule: () => ipcRenderer.invoke('get-moon-schedule'),
-  getSunSchedule: () => ipcRenderer.invoke('get-sun-schedule'),
-  getNodesSchedule: () => ipcRenderer.invoke('get-nodes-schedule'),
-  getMercurySchedule: () => ipcRenderer.invoke('get-mercury-schedule'),
-  getVenusSchedule: () => ipcRenderer.invoke('get-venus-schedule'),
-  getMarsSchedule: () => ipcRenderer.invoke('get-mars-schedule'),
-  getJupiterSchedule: () => ipcRenderer.invoke('get-jupiter-schedule'),
-  getSaturnSchedule: () => ipcRenderer.invoke('get-saturn-schedule'),
-  getUranusSchedule: () => ipcRenderer.invoke('get-uranus-schedule'),
-  getNeptuneSchedule: () => ipcRenderer.invoke('get-neptune-schedule'),
-  getPlutoSchedule: () => ipcRenderer.invoke('get-pluto-schedule'),
-  getChironSchedule: () => ipcRenderer.invoke('get-chiron-schedule'),
-  showNotification: (title, body) => ipcRenderer.send('show-notification', { title, body })
+// An object that will hold all the functions we expose to the renderer
+const electronAPI = {
+  // --- [NEW] Function to open the schedule popup window ---
+  openScheduleFor: (planet) => ipcRenderer.invoke('open-schedule-popup', planet),
+  
+  // --- Existing function for notifications ---
+  showNotification: ({ title, body }) => ipcRenderer.send('show-notification', { title, body })
+};
 
+// --- Refactored schedule getters for maintainability ---
+const planets = [
+    'moon', 'sun', 'nodes', 'mercury', 'venus', 'mars',
+    'jupiter', 'saturn', 'uranus', 'neptune', 'pluto', 'chiron'
+];
+
+// Loop through the planet names and create a 'get...Schedule' function for each one
+planets.forEach(planet => {
+    const functionName = `get${planet.charAt(0).toUpperCase() + planet.slice(1)}Schedule`;
+    electronAPI[functionName] = () => ipcRenderer.invoke(`get-${planet}-schedule`);
 });
+
+// Securely expose the 'electronAPI' object to the renderer process
+contextBridge.exposeInMainWorld('electronAPI', electronAPI);
