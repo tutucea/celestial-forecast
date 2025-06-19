@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Planet Schedule</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' https://cdn.jsdelivr.net;">
+    <!-- 1. ADDED LUXON LIBRARY (and updated CSP to allow it from the CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: black;
+            color: white;
+            box-sizing: border-box;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+        }
+        h2 {
+            margin-top: 0;
+            flex-shrink: 0;
+        }
+        .controls {
+            margin-bottom: 10px;
+            flex-shrink: 0;
+        }
+        button, select {
+            margin-right: 10px;
+            padding: 5px 10px;
+            background-color: #333;
+            color: white;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+        button:hover, select:hover {
+            background-color: #007bff;
+        }
+        #schedule-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            background-color: #1a1a1a;
+        }
+        #schedule-container table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 16px;
+        }
+        #schedule-container th, #schedule-container td {
+            border-bottom: 1px solid #444;
+            padding: 8px;
+            text-align: left;
+        }
+        #schedule-container th {
+            background-color: #333;
+            position: sticky;
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+    <h2 id="planet-name">Schedule</h2>
+    <div class="controls">
+        <!-- 2. REMOVED onclick="..." from buttons. Added IDs instead. -->
+        <button id="font-smaller-btn">Smaller Text</button>
+        <button id="font-larger-btn">Larger Text</button>
+        <select id="timezone-select">
+            <option value="local" selected>Local Time</option>
+            <option value="UTC">UTC</option>
+            <option value="America/New_York">America/New York</option>
+            <option value="America/Los_Angeles">America/Los Angeles</option>
+            <option value="Europe/London">Europe/London</option>
+            <option value="Asia/Tokyo">Asia/Tokyo</option>
+            <option value="Australia/Sydney">Australia/Sydney</option>
+        </select>
+    </div>
+    <div id="schedule-container">
+        <p>Waiting for data...</p>
+    </div>
+
+    <script src="./schedule-popup-renderer.js"></script>
+</body>
+</html>
