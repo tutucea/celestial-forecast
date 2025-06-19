@@ -1,53 +1,104 @@
-const { app, BrowserWindow, ipcMain, Notification } = require('electron');
+const { app, BrowserWindow, ipcMain, Notification, Menu } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
-// Set the app name explicitly
+// --- App Configuration ---
 app.setName('Celestial Forecast');
 app.setAppUserModelId('com.maia.celestialforecast');
 
+let mainWindow;
+
+// --- Main Window Creation ---
 function createWindow() {
-  const win = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 355,
     height: 800,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      // Security best practices
+      contextIsolation: true,
+      nodeIntegration: false,
     }
   });
 
-  win.loadFile('index.html'); // You’ve fixed this
+  mainWindow.loadFile('index.html');
+  // Remove the default Electron menu (File, Edit, etc.)
+  Menu.setApplicationMenu(null);
 }
 
+// --- Helper Function to Load Schedule Data (Now with Error Handling) ---
 function loadSchedule(filename) {
-  const data = fs.readFileSync(path.join(__dirname, filename));
-  return JSON.parse(data);
+    const filePath = path.join(__dirname, filename);
+    try {
+        if (fs.existsSync(filePath)) {
+            const data = fs.readFileSync(filePath, 'utf8');
+            // Return an empty array if file is empty, otherwise parse it
+            return data.trim() ? JSON.parse(data) : [];
+        }
+    } catch (error) {
+        console.error(`Error reading or parsing ${filename}:`, error);
+    }
+    // Return an empty array on error or if the file doesn't exist
+    return [];
 }
 
+
+// --- App Lifecycle ---
 app.whenReady().then(() => {
-  createWindow();
-
-  ipcMain.handle('get-moon-schedule', async () => loadSchedule('moon_schedule.json'));
-  ipcMain.handle('get-sun-schedule', async () => loadSchedule('sun_schedule.json'));
-  ipcMain.handle('get-nodes-schedule', async () => loadSchedule('nodes_schedule.json'));
-  ipcMain.handle('get-mercury-schedule', async () => loadSchedule('mercury_schedule.json'));
-  ipcMain.handle('get-venus-schedule', async () => loadSchedule('venus_schedule.json'));
-  ipcMain.handle('get-mars-schedule', async () => loadSchedule('mars_schedule.json'));
-  ipcMain.handle('get-jupiter-schedule', async () => loadSchedule('jupiter_schedule.json'));
-  ipcMain.handle('get-saturn-schedule', async () => loadSchedule('saturn_schedule.json'));
-  ipcMain.handle('get-uranus-schedule', async () => loadSchedule('uranus_schedule.json'));
-  ipcMain.handle('get-neptune-schedule', async () => loadSchedule('neptune_schedule.json'));
-  ipcMain.handle('get-pluto-schedule', async () => loadSchedule('pluto_schedule.json'));
-  ipcMain.handle('get-chiron-schedule', async () => loadSchedule('chiron_schedule.json'))
-
-  ipcMain.on('show-notification', (event, { title, body }) => {
-    const notification = new Notification({
-      title: title,
-      body: body,
-    });
-    notification.show();
+  
+  // --- IPC Handlers for Schedule Data (Refactored for maintainability) ---
+  const planets = [
+    'moon', 'sun', 'nodes', 'mercury', 'venus', 'mars',
+    'jupiter', 'saturn', 'uranus', 'neptune', 'pluto', 'chiron'
+  ];
+  planets.forEach(planet => {
+    ipcMain.handle(`get-${planet}-schedule`, () => loadSchedule(`${planet}_schedule.json`));
   });
+
+  // --- IPC Handler for Notifications ---
+  ipcMain.on('show-notification', (event, { title, body }) => {
+    new Notification({ title, body }).show();
+  });
+
+  // --- [NEW] IPC Handler to Open the Planet Schedule Popup Window ---
+  ipcMain.handle('open-schedule-popup', (event, planet) => {
+    const schedule = loadSchedule(`${planet.toLowerCase()}_schedule.json`);
+
+    if (!schedule || schedule.length === 0) {
+        console.error(`No schedule data found for ${planet}. The popup will not open.`);
+        return; // Stop if there's no data to show
+    }
+
+    const scheduleWindow = new BrowserWindow({
+        width: 800,
+        height: 600,
+        parent: mainWindow, // Set parent to the main window
+        modal: false,
+        webPreferences: {
+            // IMPORTANT: Use the new preload script for this window
+            preload: path.join(__dirname, 'popup_preload.js'),
+            contextIsolation: true,
+            nodeIntegration: false,
+        },
+        show: false, // Don't show the window until it's ready
+        title: `${planet.charAt(0).toUpperCase() + planet.slice(1)} Schedule`,
+        autoHideMenuBar: true
+    });
+
+    // Load the new HTML file for the popup
+    scheduleWindow.loadFile(path.join(__dirname, 'schedule-popup.html'));
+
+    // Once the window's content is ready, send the schedule data and show it
+    scheduleWindow.webContents.once('did-finish-load', () => {
+        scheduleWindow.webContents.send('receive-schedule', { planet, schedule });
+        scheduleWindow.show();
+    });
+  });
+
+  createWindow();
 });
 
+// --- Standard App Lifecycle Handlers ---
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
