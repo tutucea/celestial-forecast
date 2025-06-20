@@ -1,7 +1,7 @@
 {
   "name": "celestial-forecast-app",
   "productName": "Celestial Forecast",
-  "version": "2.0.1",
+  "version": "2.1.1",
   "description": "Celestial Forecast",
   "license": "ISC",
   "author": "Ethan Johnson",
@@ -14,5 +14,8 @@
   "devDependencies": {
     "electron": "^34.0.2",
     "electron-builder": "^25.1.8"
+  },
+  "dependencies": {
+    "luxon": "^3.6.1"
   }
 }
