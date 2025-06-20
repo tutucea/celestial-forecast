@@ -70,10 +70,10 @@ Simply click on any planet's symbol (e.g., ☉, ☽) in the main window to open 
 *   **Comprehensive Information:** The table displays crucial data points for each transit, including Gate, Line, the exact Timestamp, Longitude, and Motion.
 *   **User-Friendly Interface:** The popup window includes controls to increase or decrease the text size for better readability.
 *   https://ibb.co/tPp9TCn9
-*   do this if you only updating your files and do not install everything 
-         ```bash
+*   do this if you only updating your files for the timezones, if you install everything there is no need
+*   ```bash
     npm install luxon
-        ```
+    ```
 
 ### Linux (Ubuntu) Users
 If you see a `chrome-sandbox` error (e.g., [this error](https://pastebin.com/8kZ6Uwnp)), run this before `npm start`:
