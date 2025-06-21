@@ -54,6 +54,17 @@ Celestial-Forecast Screenshot -  https://ibb.co/RGLbVTq2
      ```
    - Find the DMG (macOS) or EXE (Windows) in the `dist` or `build` folder and install it.
 
+6. **Planet Data**:
+   With local time, UTC and a few other( this can be customized where you can add your preference by editing "schedule-popup.html"). Type this if you simply updating only the new files for timezones to work correctly.
+   ```bash
+   npm install luxon
+   ```
+   https://ibb.co/LD8mXJ7J
+
+8. ### Accuracy 
+Please let me know if you see any discrepancies but before check this [Swiss Ephemeris - Swetest](https://www.astro.com/swisseph/swetest.htm)  or 
+[JPL Horizons](https://ssd.jpl.nasa.gov/horizons/)
+
 ### Linux (Ubuntu) Users
 If you see a `chrome-sandbox` error (e.g., [this error](https://pastebin.com/8kZ6Uwnp)), run this before `npm start`:
 ```bash
