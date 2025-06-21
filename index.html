@@ -32,36 +32,31 @@
         color: #bbbbbb; /* Light grey color */
     }
     
-    /* --- [NEW] Styles for clickable Planet Symbols --- */
-    
-    /* The h2 tag now holds the planet symbol */
+    /* Styles for clickable Planet Symbols */
     h2 {
-        font-size: 1.2em; /* Match body font size */
-        margin: 0; /* Remove default heading margin */
-        display: inline-block; /* Allows it to sit next to the countdown timer */
+        font-size: 1.2em;
+        margin: 0;
+        display: inline-block;
         font-weight: bold;
         margin-right: 5px;
     }
 
-    /* This class is added by JavaScript to make the symbol interactive */
     .planet-title {
-        cursor: pointer; /* Show a pointer on hover */
-        transition: color 0.2s ease, text-shadow 0.2s ease; /* Smooth transition effect */
+        cursor: pointer;
+        color: white; /* Default color */
+        transition: color 0.3s ease; /* Smooth transition for color */
     }
     .planet-title:hover {
-        color: #7ab3ff; /* A nice light blue on hover */
+        color: #7ab3ff; /* Light blue on hover */
     }
     .planet-title.clicked {
-        color: #0084ff; /* A vibrant blue when clicked */
-        text-shadow: 0 0 8px #00aaff, 0 0 16px #00aaff; /* The "shiny" glow effect */
+        color: #007bff; /* Vibrant blue on click, matches Android */
+        transition: color 0.3s ease; /* Ensure smooth transition */
     }
     </style>
 </head>
 <body>
     <div id="datetime">-</div>
-
-    <!-- Each planet-section now has an ID that matches the prefix in renderer1.js -->
-    <!-- The planet symbol is now in an <h2> tag so it can be targeted -->
 
     <div id="moon" class="planet-section">
         <div class="countdown">

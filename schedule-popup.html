@@ -4,7 +4,6 @@
     <title>Planet Schedule</title>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' https://cdn.jsdelivr.net;">
-    <!-- 1. ADDED LUXON LIBRARY (and updated CSP to allow it from the CDN) -->
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
     <style>
         body {
@@ -58,12 +57,16 @@
             position: sticky;
             top: 0;
         }
+        /* Added for highlighting the current activation */
+        .current-activation {
+            background-color: rgba(76, 175, 80, 0.2); /* Light green with 20% opacity, matches Android */
+            color: white; /* Ensure text is readable */
+        }
     </style>
 </head>
 <body>
     <h2 id="planet-name">Schedule</h2>
     <div class="controls">
-        <!-- 2. REMOVED onclick="..." from buttons. Added IDs instead. -->
         <button id="font-smaller-btn">Smaller Text</button>
         <button id="font-larger-btn">Larger Text</button>
         <select id="timezone-select">

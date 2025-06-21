@@ -49,9 +49,32 @@ function renderTable() {
         return;
     }
 
+    // Find the current activation (latest entry with timestamp <= current UTC time)
+    let currentActivationIndex = -1;
+    const now = DateTime ? DateTime.now().toUTC() : new Date();
+    if (DateTime) {
+        currentSchedule.forEach((entry, index) => {
+            if (entry.timestamp) {
+                const entryTime = DateTime.fromISO(entry.timestamp, { zone: 'utc' });
+                if (entryTime.isValid && entryTime <= now && (currentActivationIndex === -1 || entryTime > DateTime.fromISO(currentSchedule[currentActivationIndex].timestamp, { zone: 'utc' }))) {
+                    currentActivationIndex = index;
+                }
+            }
+        });
+    } else {
+        currentSchedule.forEach((entry, index) => {
+            if (entry.timestamp) {
+                const entryTime = new Date(entry.timestamp);
+                if (!isNaN(entryTime.getTime()) && entryTime <= now && (currentActivationIndex === -1 || entryTime > new Date(currentSchedule[currentActivationIndex].timestamp))) {
+                    currentActivationIndex = index;
+                }
+            }
+        });
+    }
+    console.log(`schedule-popup-renderer.js: Current activation index: ${currentActivationIndex}`);
+
     let tableHTML = '<table><thead><tr><th>Gate</th><th>Line</th><th>Timestamp</th><th>Longitude</th><th>Motion</th></tr></thead><tbody>';
     currentSchedule.forEach((entry, index) => {
-        // Use default values for cleaner code
         const gate = (entry.gate || '—').replace('Gate', '').trim();
         const line = String(entry.line || '—').trim();
         const longitude = entry.longitude != null ? entry.longitude.toFixed(4) : '—';
@@ -60,9 +83,8 @@ function renderTable() {
         let timestamp = '—';
         if (entry.timestamp) {
             try {
-                // Luxon is preferred
                 if (DateTime) {
-                    const parsed = DateTime.fromISO(entry.timestamp, { zone: 'utc' }); // Assume incoming times are UTC
+                    const parsed = DateTime.fromISO(entry.timestamp, { zone: 'utc' });
                     if (!parsed.isValid) {
                         throw new Error(`Invalid timestamp: ${entry.timestamp} (${parsed.invalidReason})`);
                     }
@@ -74,10 +96,9 @@ function renderTable() {
                         .toFormat('yyyy-MM-dd HH:mm:ss');
                         
                     console.log(`schedule-popup-renderer.js: Parsed timestamp ${entry.timestamp} to ${timestamp} in ${effectiveTimeZone}`);
-
-                } else { // Fallback to native Date if Luxon is missing
+                } else {
                     const date = new Date(entry.timestamp);
-                    timestamp = date.toLocaleString('en-CA', { // Use a neutral format like en-CA for YYYY-MM-DD
+                    timestamp = date.toLocaleString('en-CA', {
                         timeZone: currentTimeZone === 'local' ? undefined : currentTimeZone,
                         year: 'numeric', month: '2-digit', day: '2-digit',
                         hour: '2-digit', minute: '2-digit', second: '2-digit',
@@ -89,11 +110,25 @@ function renderTable() {
             }
         }
         
-        tableHTML += `<tr><td>${gate}</td><td>${line}</td><td>${timestamp}</td><td>${longitude}</td><td>${motion}</td></tr>`;
+        // Add current-activation class if this is the current activation
+        const rowClass = index === currentActivationIndex ? ' class="current-activation"' : '';
+        tableHTML += `<tr${rowClass}><td>${gate}</td><td>${line}</td><td>${timestamp}</td><td>${longitude}</td><td>${motion}</td></tr>`;
     });
     tableHTML += '</tbody></table>';
 
     containerDiv.innerHTML = tableHTML;
+
+    // Scroll to the current activation if found
+    if (currentActivationIndex !== -1) {
+        const rows = containerDiv.querySelectorAll('table tbody tr');
+        if (rows[currentActivationIndex]) {
+            rows[currentActivationIndex].scrollIntoView({
+                behavior: 'smooth',
+                block: 'center' // Center the row in the viewport
+            });
+            console.log(`schedule-popup-renderer.js: Scrolled to current activation at index ${currentActivationIndex}`);
+        }
+    }
     console.log('schedule-popup-renderer.js: Table rendered successfully.');
 }
 
@@ -117,21 +152,16 @@ function updateTimeZone() {
     const newTimeZone = select.value;
     console.log(`schedule-popup-renderer.js: Selected time zone: ${newTimeZone}`);
     
-    // Update the global state and re-render the table
     currentTimeZone = newTimeZone;
     renderTable();
 }
 
-// *** THIS IS THE MAIN CHANGED SECTION ***
-// Setup all event listeners once the window and DOM are loaded.
 window.onload = function() {
     console.log('schedule-popup-renderer.js: Window loaded. Setting up listeners.');
     
     try {
-        // --- Setup Timezone Dropdown ---
         const timezoneSelect = document.getElementById('timezone-select');
         if (timezoneSelect) {
-            // Update the 'Local Time' option to show the actual zone name
             if (DateTime) {
                 const localZone = DateTime.local().zoneName;
                 const localOption = timezoneSelect.querySelector('option[value="local"]');
@@ -145,7 +175,6 @@ window.onload = function() {
             console.error('schedule-popup-renderer.js: ERROR: timezone-select element not found.');
         }
         
-        // --- Setup Font Size Buttons (Moved from HTML) ---
         const smallerFontBtn = document.getElementById('font-smaller-btn');
         if (smallerFontBtn) {
             smallerFontBtn.addEventListener('click', () => changeFontSize(-2));
