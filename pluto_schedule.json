@@ -1,5 +1,61 @@
 [
     {
+        "timestamp": "2024-01-24T21:09:15+00:00",
+        "gate": "Gate 60",
+        "line": " 5",
+        "longitude": 300.125,
+        "motion": "direct"
+    },
+    {
+        "timestamp": "2024-02-24T08:15:34+00:00",
+        "gate": "Gate 60",
+        "line": " 6",
+        "longitude": 301.0625,
+        "motion": "direct"
+    },
+    {
+        "timestamp": "2024-04-11T19:32:28+00:00",
+        "gate": "Gate 41",
+        "line": " 1",
+        "longitude": 302.0,
+        "motion": "direct"
+    },
+    {
+        "timestamp": "2024-05-24T00:07:41+00:00",
+        "gate": "Gate 60",
+        "line": " 6",
+        "longitude": 302.0,
+        "motion": "retrograde"
+    },
+    {
+        "timestamp": "2024-07-15T01:51:15+00:00",
+        "gate": "Gate 60",
+        "line": " 5",
+        "longitude": 301.0625,
+        "motion": "retrograde"
+    },
+    {
+        "timestamp": "2024-08-26T00:08:22+00:00",
+        "gate": "Gate 60",
+        "line": " 4",
+        "longitude": 300.125,
+        "motion": "retrograde"
+    },
+    {
+        "timestamp": "2024-11-26T07:44:35+00:00",
+        "gate": "Gate 60",
+        "line": " 5",
+        "longitude": 300.125,
+        "motion": "direct"
+    },
+    {
+        "timestamp": "2024-12-31T22:11:59+00:00",
+        "gate": "Gate 60",
+        "line": " 6",
+        "longitude": 301.0625,
+        "motion": "direct"
+    },
+    {
         "timestamp": "2025-01-30T07:55:54+00:00",
         "gate": "Gate 41",
         "line": " 1",
@@ -21,14 +77,14 @@
         "motion": "retrograde"
     },
     {
-        "timestamp": "2025-08-20T08:57:41+00:00",
+        "timestamp": "2025-08-20T08:57:40+00:00",
         "gate": "Gate 60",
         "line": " 6",
         "longitude": 302.0,
         "motion": "retrograde"
     },
     {
-        "timestamp": "2025-12-05T08:58:03+00:00",
+        "timestamp": "2025-12-05T08:58:02+00:00",
         "gate": "Gate 41",
         "line": " 1",
         "longitude": 302.0,
@@ -46,48 +102,6 @@
         "gate": "Gate 41",
         "line": " 3",
         "longitude": 303.875,
-        "motion": "direct"
-    },
-    {
-        "timestamp": "2026-03-11T23:00:53+00:00",
-        "gate": "Gate 41",
-        "line": " 4",
-        "longitude": 304.8125,
-        "motion": "direct"
-    },
-    {
-        "timestamp": "2026-07-04T01:07:23+00:00",
-        "gate": "Gate 41",
-        "line": " 3",
-        "longitude": 304.8125,
-        "motion": "retrograde"
-    },
-    {
-        "timestamp": "2026-08-14T03:37:45+00:00",
-        "gate": "Gate 41",
-        "line": " 2",
-        "longitude": 303.875,
-        "motion": "retrograde"
-    },
-    {
-        "timestamp": "2026-12-14T17:29:16+00:00",
-        "gate": "Gate 41",
-        "line": " 3",
-        "longitude": 303.875,
-        "motion": "direct"
-    },
-    {
-        "timestamp": "2027-01-16T00:47:40+00:00",
-        "gate": "Gate 41",
-        "line": " 4",
-        "longitude": 304.8125,
-        "motion": "direct"
-    },
-    {
-        "timestamp": "2027-02-14T21:05:27+00:00",
-        "gate": "Gate 41",
-        "line": " 5",
-        "longitude": 305.75,
         "motion": "direct"
     }
 ]
