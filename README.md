@@ -68,6 +68,7 @@ Please let me know if you see any discrepancies but before check this [Swiss Eph
 ### Linux (Ubuntu) Users
 If you see a `chrome-sandbox` error (e.g., [this error](https://pastebin.com/8kZ6Uwnp)), run this before `npm start`:
 ```bash
+cd node_modules/electron/dist/
 sudo chown root chrome-sandbox && sudo chmod 4755 chrome-sandbox
 ```
 ### Notes
