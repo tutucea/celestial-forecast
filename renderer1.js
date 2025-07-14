@@ -42,29 +42,29 @@ async function updateDisplay(isFirstRun = false) {
     const now = new Date();
     document.getElementById('datetime').textContent = formatTime(now);
 
-    console.log('renderer1.js: Fetching schedules for', planetNames);
     const schedulePromises = planetNames.map(p => {
       const method = `get${p.charAt(0).toUpperCase() + p.slice(1)}Schedule`;
       if (!window.electronAPI[method]) {
         console.error(`renderer1.js: electronAPI.${method} is not defined`);
-        return Promise.resolve([]); // Return empty array to avoid breaking Promise.all
+        return Promise.resolve([]);
       }
       return window.electronAPI[method]().catch(err => {
         console.error(`renderer1.js: Error fetching ${p} schedule:`, err);
-        return []; // Return empty array on error
+        return [];
       });
     });
     const schedules = await Promise.all(schedulePromises);
     const scheduleMap = {};
     planetNames.forEach((planet, index) => {
       scheduleMap[planet] = schedules[index] || [];
-      console.log(`renderer1.js: ${planet} schedule:`, scheduleMap[planet]);
     });
 
+    // Process main planets
     planetNames.forEach(planet => {
       processSchedule(scheduleMap[planet], planet, now, null, isFirstRun);
     });
 
+    // Process Earth based on Sun's schedule
     const sunSchedule = scheduleMap['sun'];
     if (sunSchedule && sunSchedule.length > 0) {
       const earthSchedule = sunSchedule
@@ -73,12 +73,12 @@ async function updateDisplay(isFirstRun = false) {
           gate: findOppositeGate(activation.gate)
         }))
         .filter(activation => activation.gate !== null);
-      console.log('renderer1.js: earth schedule:', earthSchedule);
       processSchedule(earthSchedule, 'earth', now, sunSchedule, isFirstRun);
     } else {
       console.warn('renderer1.js: No sun schedule available for earth');
     }
-
+    
+    // Process South Node based on North Node's schedule
     const nodesSchedule = scheduleMap['nodes'];
     if (nodesSchedule && nodesSchedule.length > 0) {
       const southNodeSchedule = nodesSchedule
@@ -87,7 +87,6 @@ async function updateDisplay(isFirstRun = false) {
           gate: findOppositeGate(activation.gate)
         }))
         .filter(activation => activation.gate !== null);
-      console.log('renderer1.js: southnode schedule:', southNodeSchedule);
       processSchedule(southNodeSchedule, 'southnode', now, nodesSchedule, isFirstRun);
     } else {
       console.warn('renderer1.js: No nodes schedule available for southnode');
@@ -118,7 +117,6 @@ function processSchedule(schedule, prefix, now, syncedSchedule = null, isFirstRu
   }
 
   if (!schedule || schedule.length === 0) {
-    console.log(`renderer1.js: No schedule data for ${prefix}`);
     currentElement.textContent = 'No Data';
     nextElement.textContent = '-';
     countdownTextElement.textContent = '-';
@@ -133,7 +131,6 @@ function processSchedule(schedule, prefix, now, syncedSchedule = null, isFirstRu
   for (const activation of schedule) {
     const activationTime = parseTimestamp(activation.timestamp);
     if (!activationTime) {
-      console.warn(`renderer1.js: Invalid timestamp in ${prefix} activation:`, activation);
       continue;
     }
     if (activationTime <= now) {
@@ -166,48 +163,56 @@ function processSchedule(schedule, prefix, now, syncedSchedule = null, isFirstRu
     }
   }
 
-  let countdownText = formatCountdown(countdownNext, now);
-  countdownTextElement.textContent = countdownText;
+  countdownTextElement.textContent = formatCountdown(countdownNext, now);
+  
   let percentage = '';
   if (currentActivation && countdownNext) {
     const currentTime = parseTimestamp(currentActivation.timestamp);
     const nextTime = parseTimestamp(countdownNext.timestamp);
+
     if (currentTime && nextTime) {
+      // *** START: REVISED PERCENTAGE LOGIC ***
+      const timeSinceNext = now.getTime() - nextTime.getTime();
       const totalDuration = nextTime.getTime() - currentTime.getTime();
-      const elapsedDuration = now.getTime() - currentTime.getTime();
-      if (now >= nextTime) {
-        // If current time exceeds next activation, reset to 0% for the new cycle
-        percentage = '0%';
+
+      if (timeSinceNext >= 0) {
+        // The activation time has passed.
+        if (timeSinceNext < 1000) {
+          // It happened within the last second, show 100% for this one update cycle.
+          percentage = '<span style="color: rgb(255, 0, 0);">100%</span>';
+        } else {
+          // It's been over a second, reset to 0 for the new cycle.
+          percentage = '0%';
+        }
       } else if (totalDuration > 0) {
-        const percent = Math.min(100, Math.max(0, Math.round((elapsedDuration / totalDuration) * 100)));
-        // Color transition: Green (0%) to Yellow (50%) to Red (100%)
+        // The activation is still in the future.
+        const elapsedDuration = now.getTime() - currentTime.getTime();
+        // Use Math.floor to prevent showing 100% prematurely. It will show up to 99%.
+        const percent = Math.floor((elapsedDuration / totalDuration) * 100);
+
+        // Improved Green -> Yellow -> Red color gradient
         let color;
         if (percent < 50) {
-          const r = 0;
-          const g = Math.round(255 * (percent / 50));
-          const b = 0;
-          color = `rgb(${r}, ${g}, ${b})`;
+          // Green to Yellow: Increase Red component
+          const r = Math.round(5.1 * percent); // 5.1 * 50 = 255
+          color = `rgb(${r}, 255, 0)`;
         } else {
-          const r = Math.round(255 * ((percent - 50) / 50));
-          const g = Math.round(255 * (1 - (percent - 50) / 50));
-          const b = 0;
-          color = `rgb(${r}, ${g}, ${b})`;
+          // Yellow to Red: Decrease Green component
+          const g = Math.round(255 - (5.1 * (percent - 50)));
+          color = `rgb(255, ${g}, 0)`;
         }
-        percentage = `<span style="color: ${color};">${percent}%</span>`;
+        percentage = `<span style="color: ${color};">${Math.max(0, percent)}%</span>`; // Math.max to prevent weird negative values
       } else {
-        console.warn(`renderer1.js: Invalid duration for ${prefix}: totalDuration=${totalDuration}`);
         percentage = '0%';
       }
-    } else {
-      console.warn(`renderer1.js: Invalid timestamps for ${prefix}: current=${currentActivation.timestamp}, next=${countdownNext.timestamp}`);
-      percentage = '0%';
+      // *** END: REVISED PERCENTAGE LOGIC ***
     }
-  } else if (currentActivation && !countdownNext) {
-    // If no next activation, reset to 0% when the current one just started
+  } else {
     percentage = '0%';
   }
   percentageElement.innerHTML = percentage;
 
+  // This logic correctly applies classes based on the global state
   if (isCountdownHidden) {
     countdownTextElement.classList.add('hidden-countdown');
     planetNameElement.classList.remove('hidden-planet-name');
@@ -220,7 +225,7 @@ function processSchedule(schedule, prefix, now, syncedSchedule = null, isFirstRu
 }
 
 function showNotification(prefix, activation) {
-  const planetName = prefix.toUpperCase();
+  const planetName = planetDisplayNames[prefix] || prefix.toUpperCase();
   const message = `${planetName} moved to ${activation.gate}, line ${activation.line}`;
   console.log(`renderer1.js: Showing notification: ${planetName} - ${message}`);
   window.electronAPI.showNotification({
@@ -278,15 +283,14 @@ function formatTime(timestamp) {
   }) : '-';
 }
 
-// Event listener for body clicks
 document.body.addEventListener('click', (event) => {
   const targetPlanet = event.target.closest('.planet-title');
   if (targetPlanet) {
     event.stopPropagation();
     const prefix = targetPlanet.parentElement.parentElement.id;
-    let primaryPlanetName = prefix.replace('south', ''); // Remove 'south' for southnode
+    let primaryPlanetName = prefix.replace('south', '');
     if (prefix === 'earth') {
-      primaryPlanetName = 'sun'; // Earth uses Sun's schedule
+      primaryPlanetName = 'sun';
     }
     console.log(`renderer1.js: Opening schedule for ${primaryPlanetName}`);
     if (planetNames.includes(primaryPlanetName) && window.electronAPI?.openScheduleFor) {
@@ -314,34 +318,18 @@ document.body.addEventListener('click', (event) => {
   }
 
   if (event.target.id === 'toggle-countdown-btn') {
-    const countdownTexts = document.querySelectorAll('.countdown-text');
-    const planetNames = document.querySelectorAll('.planet-name');
-    const percentages = document.querySelectorAll('.percentage');
     isCountdownHidden = !isCountdownHidden; // Toggle the global flag
-    countdownTexts.forEach(ct => ct.classList.toggle('hidden-countdown', isCountdownHidden));
-    planetNames.forEach(pn => pn.classList.toggle('hidden-planet-name', !isCountdownHidden));
-    percentages.forEach(p => p.classList.toggle('hidden-percentage', !isCountdownHidden));
-    event.target.textContent = isCountdownHidden ? 'Hide All Countdowns' : 'Show All Countdowns';
+
+    // Apply the correct classes to all relevant elements based on the new state
+    document.querySelectorAll('.countdown-text').forEach(ct => ct.classList.toggle('hidden-countdown', isCountdownHidden));
+    document.querySelectorAll('.planet-name').forEach(pn => pn.classList.toggle('hidden-planet-name', !isCountdownHidden));
+    document.querySelectorAll('.percentage').forEach(p => p.classList.toggle('hidden-percentage', !isCountdownHidden));
+    
+    // *** FIXED: Correctly set button text based on the *new* state ***
+    event.target.textContent = isCountdownHidden ? 'Show All Countdowns' : 'Hide All Countdowns';
     return;
   }
 });
-
-// Initialize CSS for countdown container
-const style = document.createElement('style');
-style.innerHTML = `
-  .countdown-container {
-    display: inline-flex;
-    align-items: center;
-    gap: 20px; /* Matches index.html styling */
-  }
-  .planet-title {
-    cursor: pointer;
-  }
-  .planet-title.clicked {
-    color: yellow;
-  }
-`;
-document.head.appendChild(style);
 
 updateDisplay(true);
 setInterval(() => updateDisplay(false), 1000);
