@@ -14,6 +14,23 @@ const planetNames = [
   'moon', 'sun', 'nodes', 'mercury', 'venus', 'mars',
   'jupiter', 'saturn', 'uranus', 'neptune', 'pluto', 'chiron'
 ];
+const planetDisplayNames = {
+  'moon': 'Moon',
+  'sun': 'Sun',
+  'nodes': 'North Node',
+  'southnode': 'South Node',
+  'mercury': 'Mercury',
+  'venus': 'Venus',
+  'mars': 'Mars',
+  'jupiter': 'Jupiter',
+  'saturn': 'Saturn',
+  'uranus': 'Uranus',
+  'neptune': 'Neptune',
+  'pluto': 'Pluto',
+  'chiron': 'Chiron',
+  'earth': 'Earth'
+};
+let isCountdownHidden = false; // Global flag to track toggle state
 
 function findOppositeGate(gate) {
   const numericGate = parseInt(gate.toString().replace(/\D/g, ''), 10);
@@ -91,8 +108,11 @@ function processSchedule(schedule, prefix, now, syncedSchedule = null, isFirstRu
   const currentElement = document.getElementById(`${prefix}-current-activation`);
   const nextElement = document.getElementById(`${prefix}-next-activation`);
   const countdownElement = document.getElementById(`${prefix}-countdown-timer`);
+  const countdownTextElement = countdownElement.querySelector('.countdown-text');
+  const percentageElement = countdownElement.querySelector('.percentage');
+  const planetNameElement = document.getElementById(`${prefix}-planet-name`);
 
-  if (!currentElement || !nextElement || !countdownElement) {
+  if (!currentElement || !nextElement || !countdownElement || !countdownTextElement || !percentageElement || !planetNameElement) {
     console.error(`renderer1.js: Missing DOM elements for ${prefix}`);
     return;
   }
@@ -101,7 +121,10 @@ function processSchedule(schedule, prefix, now, syncedSchedule = null, isFirstRu
     console.log(`renderer1.js: No schedule data for ${prefix}`);
     currentElement.textContent = 'No Data';
     nextElement.textContent = '-';
-    countdownElement.innerHTML = '<div class="countdown-container">-</div>';
+    countdownTextElement.textContent = '-';
+    percentageElement.textContent = '';
+    planetNameElement.classList.add('hidden-planet-name');
+    percentageElement.classList.add('hidden-percentage');
     return;
   }
 
@@ -144,6 +167,7 @@ function processSchedule(schedule, prefix, now, syncedSchedule = null, isFirstRu
   }
 
   let countdownText = formatCountdown(countdownNext, now);
+  countdownTextElement.textContent = countdownText;
   let percentage = '';
   if (currentActivation && countdownNext) {
     const currentTime = parseTimestamp(currentActivation.timestamp);
@@ -151,7 +175,10 @@ function processSchedule(schedule, prefix, now, syncedSchedule = null, isFirstRu
     if (currentTime && nextTime) {
       const totalDuration = nextTime.getTime() - currentTime.getTime();
       const elapsedDuration = now.getTime() - currentTime.getTime();
-      if (totalDuration > 0) {
+      if (now >= nextTime) {
+        // If current time exceeds next activation, reset to 0% for the new cycle
+        percentage = '0%';
+      } else if (totalDuration > 0) {
         const percent = Math.min(100, Math.max(0, Math.round((elapsedDuration / totalDuration) * 100)));
         // Color transition: Green (0%) to Yellow (50%) to Red (100%)
         let color;
@@ -169,12 +196,27 @@ function processSchedule(schedule, prefix, now, syncedSchedule = null, isFirstRu
         percentage = `<span style="color: ${color};">${percent}%</span>`;
       } else {
         console.warn(`renderer1.js: Invalid duration for ${prefix}: totalDuration=${totalDuration}`);
+        percentage = '0%';
       }
     } else {
       console.warn(`renderer1.js: Invalid timestamps for ${prefix}: current=${currentActivation.timestamp}, next=${countdownNext.timestamp}`);
+      percentage = '0%';
     }
+  } else if (currentActivation && !countdownNext) {
+    // If no next activation, reset to 0% when the current one just started
+    percentage = '0%';
   }
-  countdownElement.innerHTML = countdownText ? `<div class="countdown-container">${countdownText}  ${percentage}</div>` : '<div class="countdown-container">-</div>';
+  percentageElement.innerHTML = percentage;
+
+  if (isCountdownHidden) {
+    countdownTextElement.classList.add('hidden-countdown');
+    planetNameElement.classList.remove('hidden-planet-name');
+    percentageElement.classList.remove('hidden-percentage');
+  } else {
+    countdownTextElement.classList.remove('hidden-countdown');
+    planetNameElement.classList.add('hidden-planet-name');
+    percentageElement.classList.add('hidden-percentage');
+  }
 }
 
 function showNotification(prefix, activation) {
@@ -268,6 +310,18 @@ document.body.addEventListener('click', (event) => {
     } else {
       console.error("renderer1.js: Could not get gate number from countdown or API is not available.");
     }
+    return;
+  }
+
+  if (event.target.id === 'toggle-countdown-btn') {
+    const countdownTexts = document.querySelectorAll('.countdown-text');
+    const planetNames = document.querySelectorAll('.planet-name');
+    const percentages = document.querySelectorAll('.percentage');
+    isCountdownHidden = !isCountdownHidden; // Toggle the global flag
+    countdownTexts.forEach(ct => ct.classList.toggle('hidden-countdown', isCountdownHidden));
+    planetNames.forEach(pn => pn.classList.toggle('hidden-planet-name', !isCountdownHidden));
+    percentages.forEach(p => p.classList.toggle('hidden-percentage', !isCountdownHidden));
+    event.target.textContent = isCountdownHidden ? 'Hide All Countdowns' : 'Show All Countdowns';
     return;
   }
 });
