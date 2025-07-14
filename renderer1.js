@@ -88,16 +88,25 @@ function processSchedule(schedule, prefix, now, syncedSchedule = null, isFirstRu
     return;
   }
 
+  const currentElement = document.getElementById(`${prefix}-current-activation`);
+  const nextElement = document.getElementById(`${prefix}-next-activation`);
+  const countdownElement = document.getElementById(`${prefix}-countdown-timer`);
+
+  if (!currentElement || !nextElement || !countdownElement) {
+    console.error(`renderer1.js: Missing DOM elements for ${prefix}`);
+    return;
+  }
+
   if (!schedule || schedule.length === 0) {
     console.log(`renderer1.js: No schedule data for ${prefix}`);
-    document.getElementById(`${prefix}-current-activation`).textContent = 'No Data';
-    document.getElementById(`${prefix}-next-activation`).textContent = '-';
-    document.getElementById(`${prefix}-countdown-timer`).textContent = '-';
+    currentElement.textContent = 'No Data';
+    nextElement.textContent = '-';
+    countdownElement.innerHTML = '<div class="countdown-container">-</div>';
     return;
   }
 
   let currentActivation = null,
-    nextActivation = null;
+      nextActivation = null;
   for (const activation of schedule) {
     const activationTime = parseTimestamp(activation.timestamp);
     if (!activationTime) {
@@ -112,7 +121,7 @@ function processSchedule(schedule, prefix, now, syncedSchedule = null, isFirstRu
     }
   }
 
-  const activationKey = `${currentActivation?.gate}-${currentActivation?.line}-${currentActivation?.timestamp}`;
+  const activationKey = currentActivation ? `${currentActivation.gate}-${currentActivation.line}-${currentActivation.timestamp}` : null;
   if (currentActivation) {
     if (isFirstRun) {
       lastActivations[prefix] = activationKey;
@@ -122,8 +131,8 @@ function processSchedule(schedule, prefix, now, syncedSchedule = null, isFirstRu
     }
   }
 
-  document.getElementById(`${prefix}-current-activation`).textContent = formatActivation(currentActivation);
-  document.getElementById(`${prefix}-next-activation`).textContent = formatActivation(nextActivation);
+  currentElement.textContent = formatActivation(currentActivation);
+  nextElement.textContent = formatActivation(nextActivation);
 
   const countdownSource = syncedSchedule || schedule;
   let countdownNext = null;
@@ -133,31 +142,26 @@ function processSchedule(schedule, prefix, now, syncedSchedule = null, isFirstRu
       break;
     }
   }
-  document.getElementById(`${prefix}-countdown-timer`).textContent = formatCountdown(countdownNext, now);
 
-  if (isFirstRun) {
-    const planetTitle = planetContainer.querySelector('h2');
-    if (planetTitle) {
-      planetTitle.classList.add('planet-title');
-
-      planetTitle.addEventListener('click', (event) => {
-        event.stopPropagation();
-
-        planetTitle.classList.add('clicked');
-        setTimeout(() => {
-          planetTitle.classList.remove('clicked');
-        }, 300);
-
-        const primaryPlanetName = prefix.replace('south', '');
-        console.log(`renderer1.js: Opening schedule for ${primaryPlanetName}`);
-        if (planetNames.includes(primaryPlanetName)) {
-          window.electronAPI.openScheduleFor(primaryPlanetName);
-        } else if (prefix === 'earth') {
-          window.electronAPI.openScheduleFor('sun');
-        }
-      });
+  let countdownText = formatCountdown(countdownNext, now);
+  let percentage = '';
+  if (currentActivation && countdownNext) {
+    const currentTime = parseTimestamp(currentActivation.timestamp);
+    const nextTime = parseTimestamp(countdownNext.timestamp);
+    if (currentTime && nextTime) {
+      const totalDuration = nextTime.getTime() - currentTime.getTime();
+      const elapsedDuration = now.getTime() - currentTime.getTime();
+      if (totalDuration > 0) {
+        const percent = Math.min(100, Math.max(0, Math.round((elapsedDuration / totalDuration) * 100)));
+        percentage = `<span style="color: red;">${percent}%</span>`;
+      } else {
+        console.warn(`renderer1.js: Invalid duration for ${prefix}: totalDuration=${totalDuration}`);
+      }
+    } else {
+      console.warn(`renderer1.js: Invalid timestamps for ${prefix}: current=${currentActivation.timestamp}, next=${countdownNext.timestamp}`);
     }
   }
+  countdownElement.innerHTML = countdownText ? `<div class="countdown-container">${countdownText}  ${percentage}</div>` : '<div class="countdown-container">-</div>';
 }
 
 function showNotification(prefix, activation) {
@@ -218,6 +222,23 @@ function formatTime(timestamp) {
     second: '2-digit'
   }) : '-';
 }
+
+// Initialize CSS for countdown container
+const style = document.createElement('style');
+style.innerHTML = `
+  .countdown-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .planet-title {
+    cursor: pointer;
+  }
+  .planet-title.clicked {
+    color: yellow;
+  }
+`;
+document.head.appendChild(style);
 
 updateDisplay(true);
 setInterval(() => updateDisplay(false), 1000);
