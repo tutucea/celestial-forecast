@@ -32,13 +32,24 @@
     .countdown-container {
         display: inline-flex;
         align-items: center;
-        gap: 20px; /* Increased from 8px to 20px for more space between countdown and percentage */
+        gap: 20px; /* Space between countdown and percentage */
+    }
+    .countdown-text {
+        color: #00ff00; /* Green for countdown text */
+    }
+    .planet-name {
+        margin-left: 5px;
+        color: #00ff00; /* Green to match countdown */
+    }
+    .percentage {
+        margin-left: 5px;
+        color: #00ff00; /* Green for percentage */
     }
     .clickable-countdown {
         cursor: pointer;
     }
     .clickable-countdown:hover {
-        color: #aaeaff; /* Light blue on hover, matches renderer1.js */
+        color: #aaeaff; /* Light blue on hover */
     }
     .next-activation {
         font-size: 15px;
@@ -60,8 +71,30 @@
         color: #7ab3ff; /* Light blue on hover */
     }
     .planet-title.clicked {
-        color: #007bff; /* Vibrant blue on click, matches Android */
+        color: #007bff; /* Vibrant blue on click */
         transition: color 0.3s ease; /* Ensure smooth transition */
+    }
+    .hidden-countdown {
+        display: none; /* Hide only the countdown text */
+    }
+    .hidden-planet-name {
+        display: none; /* Hide the planet name */
+    }
+    .hidden-percentage {
+        display: none; /* Hide the percentage */
+    }
+    #toggle-countdown-btn {
+        margin-top: 10px;
+        padding: 5px 10px;
+        font-size: 0.9em;
+        background-color: #333;
+        color: white;
+        border: 1px solid #555;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+    #toggle-countdown-btn:hover {
+        background-color: #555;
     }
     </style>
 </head>
@@ -71,7 +104,8 @@
     <div id="moon" class="planet-section">
         <div class="countdown">
             <h2 class="planet-title">☽</h2>
-            <div id="moon-countdown-timer" class="clickable-countdown countdown-container">-</div>
+            <span class="planet-name" id="moon-planet-name">Moon</span>
+            <div id="moon-countdown-timer" class="clickable-countdown countdown-container"><span class="countdown-text">-</span><span class="percentage">-</span></div>
         </div>
         <div class="current-activation">
             <span id="moon-current-activation">-</span>
@@ -84,7 +118,8 @@
     <div id="sun" class="planet-section">
         <div class="countdown">
             <h2 class="planet-title">☉</h2>
-            <div id="sun-countdown-timer" class="clickable-countdown countdown-container">-</div>
+            <span class="planet-name" id="sun-planet-name">Sun</span>
+            <div id="sun-countdown-timer" class="clickable-countdown countdown-container"><span class="countdown-text">-</span><span class="percentage">-</span></div>
         </div>
         <div class="current-activation">
             <span id="sun-current-activation">-</span>
@@ -97,7 +132,8 @@
     <div id="earth" class="planet-section">
         <div class="countdown">
             <h2 class="planet-title">⊕</h2>
-            <div id="earth-countdown-timer" class="clickable-countdown countdown-container">-</div>
+            <span class="planet-name" id="earth-planet-name">Earth</span>
+            <div id="earth-countdown-timer" class="clickable-countdown countdown-container"><span class="countdown-text">-</span><span class="percentage">-</span></div>
         </div>
         <div class="current-activation">
             <span id="earth-current-activation">-</span>
@@ -110,7 +146,8 @@
     <div id="nodes" class="planet-section">
         <div class="countdown">
             <h2 class="planet-title">☊</h2>
-            <div id="nodes-countdown-timer" class="clickable-countdown countdown-container">-</div>
+            <span class="planet-name" id="nodes-planet-name">North Node</span>
+            <div id="nodes-countdown-timer" class="clickable-countdown countdown-container"><span class="countdown-text">-</span><span class="percentage">-</span></div>
         </div>
         <div class="current-activation">
             <span id="nodes-current-activation">-</span>
@@ -123,7 +160,8 @@
     <div id="southnode" class="planet-section">
         <div class="countdown">
             <h2 class="planet-title">☋</h2>
-            <div id="southnode-countdown-timer" class="clickable-countdown countdown-container">-</div>
+            <span class="planet-name" id="southnode-planet-name">South Node</span>
+            <div id="southnode-countdown-timer" class="clickable-countdown countdown-container"><span class="countdown-text">-</span><span class="percentage">-</span></div>
         </div>
         <div class="current-activation">
             <span id="southnode-current-activation">-</span>
@@ -136,7 +174,8 @@
     <div id="mercury" class="planet-section">
         <div class="countdown">
             <h2 class="planet-title">☿</h2>
-            <div id="mercury-countdown-timer" class="clickable-countdown countdown-container">-</div>
+            <span class="planet-name" id="mercury-planet-name">Mercury</span>
+            <div id="mercury-countdown-timer" class="clickable-countdown countdown-container"><span class="countdown-text">-</span><span class="percentage">-</span></div>
         </div>
         <div class="current-activation">
             <span id="mercury-current-activation">-</span>
@@ -149,7 +188,8 @@
     <div id="venus" class="planet-section">
         <div class="countdown">
             <h2 class="planet-title">♀</h2>
-            <div id="venus-countdown-timer" class="clickable-countdown countdown-container">-</div>
+            <span class="planet-name" id="venus-planet-name">Venus</span>
+            <div id="venus-countdown-timer" class="clickable-countdown countdown-container"><span class="countdown-text">-</span><span class="percentage">-</span></div>
         </div>
         <div class="current-activation">
             <span id="venus-current-activation">-</span>
@@ -162,7 +202,8 @@
     <div id="mars" class="planet-section">
         <div class="countdown">
             <h2 class="planet-title">♂</h2>
-            <div id="mars-countdown-timer" class="clickable-countdown countdown-container">-</div>
+            <span class="planet-name" id="mars-planet-name">Mars</span>
+            <div id="mars-countdown-timer" class="clickable-countdown countdown-container"><span class="countdown-text">-</span><span class="percentage">-</span></div>
         </div>
         <div class="current-activation">
             <span id="mars-current-activation">-</span>
@@ -175,7 +216,8 @@
     <div id="jupiter" class="planet-section">
         <div class="countdown">
             <h2 class="planet-title">♃</h2>
-            <div id="jupiter-countdown-timer" class="clickable-countdown countdown-container">-</div>
+            <span class="planet-name" id="jupiter-planet-name">Jupiter</span>
+            <div id="jupiter-countdown-timer" class="clickable-countdown countdown-container"><span class="countdown-text">-</span><span class="percentage">-</span></div>
         </div>
         <div class="current-activation">
             <span id="jupiter-current-activation">-</span>
@@ -188,7 +230,8 @@
     <div id="saturn" class="planet-section">
         <div class="countdown">
             <h2 class="planet-title">♄</h2>
-            <div id="saturn-countdown-timer" class="clickable-countdown countdown-container">-</div>
+            <span class="planet-name" id="saturn-planet-name">Saturn</span>
+            <div id="saturn-countdown-timer" class="clickable-countdown countdown-container"><span class="countdown-text">-</span><span class="percentage">-</span></div>
         </div>
         <div class="current-activation">
             <span id="saturn-current-activation">-</span>
@@ -201,7 +244,8 @@
     <div id="uranus" class="planet-section">
         <div class="countdown">
             <h2 class="planet-title">♅</h2>
-            <div id="uranus-countdown-timer" class="clickable-countdown countdown-container">-</div>
+            <span class="planet-name" id="uranus-planet-name">Uranus</span>
+            <div id="uranus-countdown-timer" class="clickable-countdown countdown-container"><span class="countdown-text">-</span><span class="percentage">-</span></div>
         </div>
         <div class="current-activation">
             <span id="uranus-current-activation">-</span>
@@ -214,7 +258,8 @@
     <div id="neptune" class="planet-section">
         <div class="countdown">
             <h2 class="planet-title">♆</h2>
-            <div id="neptune-countdown-timer" class="clickable-countdown countdown-container">-</div>
+            <span class="planet-name" id="neptune-planet-name">Neptune</span>
+            <div id="neptune-countdown-timer" class="clickable-countdown countdown-container"><span class="countdown-text">-</span><span class="percentage">-</span></div>
         </div>
         <div class="current-activation">
             <span id="neptune-current-activation">-</span>
@@ -227,7 +272,8 @@
     <div id="pluto" class="planet-section">
         <div class="countdown">
             <h2 class="planet-title">♇</h2>
-            <div id="pluto-countdown-timer" class="clickable-countdown countdown-container">-</div>
+            <span class="planet-name" id="pluto-planet-name">Pluto</span>
+            <div id="pluto-countdown-timer" class="clickable-countdown countdown-container"><span class="countdown-text">-</span><span class="percentage">-</span></div>
         </div>
         <div class="current-activation">
             <span id="pluto-current-activation">-</span>
@@ -240,7 +286,8 @@
     <div id="chiron" class="planet-section">
         <div class="countdown">
             <h2 class="planet-title">⚷</h2>
-            <div id="chiron-countdown-timer" class="clickable-countdown countdown-container">-</div>
+            <span class="planet-name" id="chiron-planet-name">Chiron</span>
+            <div id="chiron-countdown-timer" class="clickable-countdown countdown-container"><span class="countdown-text">-</span><span class="percentage">-</span></div>
         </div>
         <div class="current-activation">
             <span id="chiron-current-activation">-</span>
@@ -250,6 +297,7 @@
         </div>
     </div>
 
+    <button id="toggle-countdown-btn">Hide All Countdowns</button>
     <script src="renderer1.js"></script>
 </body>
 </html>
