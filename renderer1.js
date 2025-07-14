@@ -223,13 +223,49 @@ function formatTime(timestamp) {
   }) : '-';
 }
 
+// Event listener for body clicks
+document.body.addEventListener('click', (event) => {
+  const targetPlanet = event.target.closest('.planet-title');
+  if (targetPlanet) {
+    event.stopPropagation();
+    const prefix = targetPlanet.parentElement.parentElement.id;
+    let primaryPlanetName = prefix.replace('south', ''); // Remove 'south' for southnode
+    if (prefix === 'earth') {
+      primaryPlanetName = 'sun'; // Earth uses Sun's schedule
+    }
+    console.log(`renderer1.js: Opening schedule for ${primaryPlanetName}`);
+    if (planetNames.includes(primaryPlanetName) && window.electronAPI?.openScheduleFor) {
+      window.electronAPI.openScheduleFor(primaryPlanetName);
+    } else {
+      console.error(`renderer1.js: Cannot open schedule for ${primaryPlanetName} or API not available`);
+    }
+    targetPlanet.classList.add('clicked');
+    setTimeout(() => {
+      targetPlanet.classList.remove('clicked');
+    }, 300);
+    return;
+  }
+
+  const targetCountdown = event.target.closest('.clickable-countdown');
+  if (targetCountdown) {
+    const gateNumber = targetCountdown.dataset.currentGate;
+    if (gateNumber && window.electronAPI?.openGateInfoPopup) {
+      console.log(`renderer1.js: Countdown clicked. Requesting info for Gate: ${gateNumber}`);
+      window.electronAPI.openGateInfoPopup(gateNumber);
+    } else {
+      console.error("renderer1.js: Could not get gate number from countdown or API is not available.");
+    }
+    return;
+  }
+});
+
 // Initialize CSS for countdown container
 const style = document.createElement('style');
 style.innerHTML = `
   .countdown-container {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 20px; /* Matches index.html styling */
   }
   .planet-title {
     cursor: pointer;
