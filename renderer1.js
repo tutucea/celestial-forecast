@@ -153,7 +153,20 @@ function processSchedule(schedule, prefix, now, syncedSchedule = null, isFirstRu
       const elapsedDuration = now.getTime() - currentTime.getTime();
       if (totalDuration > 0) {
         const percent = Math.min(100, Math.max(0, Math.round((elapsedDuration / totalDuration) * 100)));
-        percentage = `<span style="color: red;">${percent}%</span>`;
+        // Color transition: Green (0%) to Yellow (50%) to Red (100%)
+        let color;
+        if (percent < 50) {
+          const r = 0;
+          const g = Math.round(255 * (percent / 50));
+          const b = 0;
+          color = `rgb(${r}, ${g}, ${b})`;
+        } else {
+          const r = Math.round(255 * ((percent - 50) / 50));
+          const g = Math.round(255 * (1 - (percent - 50) / 50));
+          const b = 0;
+          color = `rgb(${r}, ${g}, ${b})`;
+        }
+        percentage = `<span style="color: ${color};">${percent}%</span>`;
       } else {
         console.warn(`renderer1.js: Invalid duration for ${prefix}: totalDuration=${totalDuration}`);
       }
