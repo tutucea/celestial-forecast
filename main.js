@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Notification, Menu } = require('electron');
+const { app, BrowserWindow, ipcMain, Notification, Menu, screen } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
@@ -10,9 +10,14 @@ let mainWindow;
 
 // --- Main Window Creation ---
 function createWindow() {
+  // Get the primary display's bounds to ensure the window is positioned correctly
+  const { x, y } = screen.getPrimaryDisplay().bounds;
+
   mainWindow = new BrowserWindow({
     width: 355,
     height: 800,
+    x: x, // Position at the left edge of the primary display
+    y: y, // Position at the top edge (optional, adjust if you prefer a different vertical position)
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
