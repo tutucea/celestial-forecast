@@ -43,7 +43,7 @@
     }
     .percentage {
         margin-left: 5px;
-        /* Color is now set dynamically by JavaScript */
+        /* Color is set dynamically by JavaScript */
     }
     .clickable-countdown {
         cursor: pointer;
@@ -83,25 +83,54 @@
     .hidden-percentage {
         display: none; /* Hide the percentage */
     }
-    #toggle-countdown-btn {
-        margin-top: 10px;
-        padding: 5px 10px;
-        font-size: 0.9em;
+    .toggle-container {
+        display: flex;
+        flex-direction: column; /* Stack vertically */
+        gap: 10px; /* Space between checkboxes */
+        margin-top: 15px;
+    }
+    .toggle-option {
+        display: flex;
+        align-items: center;
+        gap: 8px; /* Space between checkbox and label */
+    }
+    input[type="checkbox"] {
+        appearance: none; /* Remove default checkbox style */
+        width: 18px;
+        height: 18px;
         background-color: #333;
-        color: white;
         border: 1px solid #555;
         border-radius: 3px;
         cursor: pointer;
+        position: relative;
+        transition: background-color 0.3s;
     }
-    #toggle-countdown-btn:hover {
+    input[type="checkbox"]:checked {
+        background-color: #00ff00; /* Green when checked */
+    }
+    input[type="checkbox"]:checked::after {
+        content: '✔'; /* Checkmark symbol */
+        color: black;
+        font-size: 14px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    input[type="checkbox"]:hover {
         background-color: #555;
+    }
+    label {
+        font-size: 0.9em;
+        color: white;
+        cursor: pointer;
     }
     </style>
 </head>
 <body>
     <div id="datetime">-</div>
 
-    <!-- All your planet sections remain the same -->
+    <!-- All planet sections remain unchanged -->
     <div id="moon" class="planet-section">
         <div class="countdown">
             <h2 class="planet-title">☽</h2>
@@ -298,7 +327,16 @@
         </div>
     </div>
 
-    <button id="toggle-countdown-btn">Hide All Countdowns</button>
+    <div class="toggle-container">
+        <div class="toggle-option">
+            <input type="checkbox" id="toggle-notifications-btn">
+            <label for="toggle-notifications-btn">Disable Notifications</label>
+        </div>
+        <div class="toggle-option">
+            <input type="checkbox" id="toggle-countdown-btn">
+            <label for="toggle-countdown-btn">Hide Countdowns</label>
+        </div>
+    </div>
     <script src="renderer1.js"></script>
 </body>
 </html>
