@@ -30,11 +30,19 @@ const planetDisplayNames = {
   'chiron': 'Chiron',
   'earth': 'Earth'
 };
-let isCountdownHidden = false; // Global flag to track toggle state
+let isCountdownHidden = false;
+let isNotificationsEnabled = true; // Track notification state
 
 function findOppositeGate(gate) {
   const numericGate = parseInt(gate.toString().replace(/\D/g, ''), 10);
   return oppositeGates[numericGate] || null;
+}
+
+async function initializeNotificationState() {
+  if (window.electronAPI.getNotificationsState) {
+    isNotificationsEnabled = await window.electronAPI.getNotificationsState();
+    updateNotificationToggleButton();
+  }
 }
 
 async function updateDisplay(isFirstRun = false) {
@@ -59,12 +67,10 @@ async function updateDisplay(isFirstRun = false) {
       scheduleMap[planet] = schedules[index] || [];
     });
 
-    // Process main planets
     planetNames.forEach(planet => {
       processSchedule(scheduleMap[planet], planet, now, null, isFirstRun);
     });
 
-    // Process Earth based on Sun's schedule
     const sunSchedule = scheduleMap['sun'];
     if (sunSchedule && sunSchedule.length > 0) {
       const earthSchedule = sunSchedule
@@ -77,8 +83,7 @@ async function updateDisplay(isFirstRun = false) {
     } else {
       console.warn('renderer1.js: No sun schedule available for earth');
     }
-    
-    // Process South Node based on North Node's schedule
+
     const nodesSchedule = scheduleMap['nodes'];
     if (nodesSchedule && nodesSchedule.length > 0) {
       const southNodeSchedule = nodesSchedule
@@ -142,7 +147,7 @@ function processSchedule(schedule, prefix, now, syncedSchedule = null, isFirstRu
   }
 
   const activationKey = currentActivation ? `${currentActivation.gate}-${currentActivation.line}-${currentActivation.timestamp}` : null;
-  if (currentActivation) {
+  if (currentActivation && isNotificationsEnabled) {
     if (isFirstRun) {
       lastActivations[prefix] = activationKey;
     } else if (lastActivations[prefix] !== activationKey) {
@@ -164,55 +169,43 @@ function processSchedule(schedule, prefix, now, syncedSchedule = null, isFirstRu
   }
 
   countdownTextElement.textContent = formatCountdown(countdownNext, now);
-  
+
   let percentage = '';
   if (currentActivation && countdownNext) {
     const currentTime = parseTimestamp(currentActivation.timestamp);
     const nextTime = parseTimestamp(countdownNext.timestamp);
 
     if (currentTime && nextTime) {
-      // *** START: REVISED PERCENTAGE LOGIC ***
       const timeSinceNext = now.getTime() - nextTime.getTime();
       const totalDuration = nextTime.getTime() - currentTime.getTime();
 
       if (timeSinceNext >= 0) {
-        // The activation time has passed.
         if (timeSinceNext < 1000) {
-          // It happened within the last second, show 100% for this one update cycle.
           percentage = '<span style="color: rgb(255, 0, 0);">100%</span>';
         } else {
-          // It's been over a second, reset to 0 for the new cycle.
           percentage = '0%';
         }
       } else if (totalDuration > 0) {
-        // The activation is still in the future.
         const elapsedDuration = now.getTime() - currentTime.getTime();
-        // Use Math.floor to prevent showing 100% prematurely. It will show up to 99%.
         const percent = Math.floor((elapsedDuration / totalDuration) * 100);
-
-        // Improved Green -> Yellow -> Red color gradient
         let color;
         if (percent < 50) {
-          // Green to Yellow: Increase Red component
-          const r = Math.round(5.1 * percent); // 5.1 * 50 = 255
+          const r = Math.round(5.1 * percent);
           color = `rgb(${r}, 255, 0)`;
         } else {
-          // Yellow to Red: Decrease Green component
           const g = Math.round(255 - (5.1 * (percent - 50)));
           color = `rgb(255, ${g}, 0)`;
         }
-        percentage = `<span style="color: ${color};">${Math.max(0, percent)}%</span>`; // Math.max to prevent weird negative values
+        percentage = `<span style="color: ${color};">${Math.max(0, percent)}%</span>`;
       } else {
         percentage = '0%';
       }
-      // *** END: REVISED PERCENTAGE LOGIC ***
     }
   } else {
     percentage = '0%';
   }
   percentageElement.innerHTML = percentage;
 
-  // This logic correctly applies classes based on the global state
   if (isCountdownHidden) {
     countdownTextElement.classList.add('hidden-countdown');
     planetNameElement.classList.remove('hidden-planet-name');
@@ -225,6 +218,7 @@ function processSchedule(schedule, prefix, now, syncedSchedule = null, isFirstRu
 }
 
 function showNotification(prefix, activation) {
+  if (!isNotificationsEnabled) return; // Skip if notifications are disabled
   const planetName = planetDisplayNames[prefix] || prefix.toUpperCase();
   const message = `${planetName} moved to ${activation.gate}, line ${activation.line}`;
   console.log(`renderer1.js: Showing notification: ${planetName} - ${message}`);
@@ -283,7 +277,14 @@ function formatTime(timestamp) {
   }) : '-';
 }
 
-document.body.addEventListener('click', (event) => {
+function updateNotificationToggleButton() {
+  const toggleButton = document.getElementById('toggle-notifications-btn');
+  if (toggleButton) {
+    toggleButton.textContent = isNotificationsEnabled ? 'Disable Notifications' : 'Enable Notifications';
+  }
+}
+
+document.body.addEventListener('click', async (event) => {
   const targetPlanet = event.target.closest('.planet-title');
   if (targetPlanet) {
     event.stopPropagation();
@@ -318,18 +319,23 @@ document.body.addEventListener('click', (event) => {
   }
 
   if (event.target.id === 'toggle-countdown-btn') {
-    isCountdownHidden = !isCountdownHidden; // Toggle the global flag
-
-    // Apply the correct classes to all relevant elements based on the new state
+    isCountdownHidden = !isCountdownHidden;
     document.querySelectorAll('.countdown-text').forEach(ct => ct.classList.toggle('hidden-countdown', isCountdownHidden));
     document.querySelectorAll('.planet-name').forEach(pn => pn.classList.toggle('hidden-planet-name', !isCountdownHidden));
     document.querySelectorAll('.percentage').forEach(p => p.classList.toggle('hidden-percentage', !isCountdownHidden));
-    
-    // *** FIXED: Correctly set button text based on the *new* state ***
     event.target.textContent = isCountdownHidden ? 'Show All Countdowns' : 'Hide All Countdowns';
+    return;
+  }
+
+  if (event.target.id === 'toggle-notifications-btn') {
+    if (window.electronAPI.toggleNotifications) {
+      isNotificationsEnabled = await window.electronAPI.toggleNotifications();
+      updateNotificationToggleButton();
+    }
     return;
   }
 });
 
+initializeNotificationState();
 updateDisplay(true);
 setInterval(() => updateDisplay(false), 1000);
