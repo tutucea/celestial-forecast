@@ -7,17 +7,17 @@ app.setName('Celestial Forecast');
 app.setAppUserModelId('com.maia.celestialforecast');
 
 let mainWindow;
+let notificationsEnabled = true; // Global flag for notification state
 
 // --- Main Window Creation ---
 function createWindow() {
-  // Get the primary display's bounds to ensure the window is positioned correctly
   const { x, y } = screen.getPrimaryDisplay().bounds;
 
   mainWindow = new BrowserWindow({
     width: 355,
     height: 800,
-    x: x, // Position at the left edge of the primary display
-    y: y, // Position at the top edge (optional, adjust if you prefer a different vertical position)
+    x: x,
+    y: y,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -26,7 +26,7 @@ function createWindow() {
   });
 
   mainWindow.loadFile('index.html');
-  Menu.setApplicationMenu(null); // Remove default Electron menu
+  Menu.setApplicationMenu(null);
 }
 
 // --- Helper Function to Load Schedule Data ---
@@ -45,7 +45,6 @@ function loadSchedule(filename) {
 
 // --- App Lifecycle ---
 app.whenReady().then(() => {
-  // --- Enable startup on Windows ---
   if (process.platform === 'win32') {
     app.setLoginItemSettings({
       openAtLogin: true,
@@ -53,7 +52,6 @@ app.whenReady().then(() => {
     });
   }
 
-  // --- IPC Handlers for Schedule Data ---
   const planets = [
     'moon', 'sun', 'nodes', 'mercury', 'venus', 'mars',
     'jupiter', 'saturn', 'uranus', 'neptune', 'pluto', 'chiron'
@@ -63,9 +61,22 @@ app.whenReady().then(() => {
     ipcMain.handle(`get-${planet}-schedule`, () => loadSchedule(`${planet}_schedule.json`));
   });
 
-  // --- IPC Handler for Notifications ---
+  // --- IPC Handler for Notifications (only show if enabled) ---
   ipcMain.on('show-notification', (event, { title, body }) => {
-    new Notification({ title, body }).show();
+    if (notificationsEnabled) {
+      new Notification({ title, body }).show();
+    }
+  });
+
+  // --- IPC Handler for Notification Toggle ---
+  ipcMain.handle('toggle-notifications', () => {
+    notificationsEnabled = !notificationsEnabled;
+    return notificationsEnabled;
+  });
+
+  // --- IPC Handler to Get Notification State ---
+  ipcMain.handle('get-notifications-state', () => {
+    return notificationsEnabled;
   });
 
   // --- IPC Handler to Open the Planet Schedule Popup Window ---
@@ -103,7 +114,6 @@ app.whenReady().then(() => {
   createWindow();
 });
 
-// --- Standard App Lifecycle Handlers ---
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
