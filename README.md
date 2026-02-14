@@ -81,6 +81,7 @@ Every time you want to run the program, open a terminal and navigate to the proj
 cd /celestial-forecast
 npm start
 ```
+had the wrong longitude for 30.2 , need to reupdate all the files for it to show correctly :) will fix in a few days 
 
 I do update the look once in a while also I will update the dates and times for all the crossings when they are about to expire.
 
