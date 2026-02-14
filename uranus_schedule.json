@@ -103,5 +103,12 @@
         "line": 3,
         "longitude": 62.9375,
         "motion": "retrograde"
+    },
+    {
+        "timestamp": "2027-01-12T07:38:23+00:00",
+        "gate": "Gate 20",
+        "line": 2,
+        "longitude": 62.0,
+        "motion": "retrograde"
     }
 ]
