@@ -83,7 +83,7 @@ npm start
 ```
 
 I do update the look once in a while also I will update the dates and times for all the crossings when they are about to expire.
-Gate 30 line 2 had the wrong longitude for direct and retrograde .. now fixed ( unless i missed it on some planet) 
+Gate 30 line 2(direct) and 30.1(retrograde) had the wrong longitude .. now fixed  
 
 Buy me a beer [via PayPal](https://paypal.me/EJohnson275)
 
