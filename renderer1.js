@@ -338,4 +338,4 @@ document.body.addEventListener('click', async (event) => {
 
 initializeNotificationState();
 updateDisplay(true);
-setInterval(() => updateDisplay(false), 1000);
+setInterval(() => updateDisplay(false), 50);
