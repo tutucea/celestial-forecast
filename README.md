@@ -82,9 +82,10 @@ cd /celestial-forecast
 npm start
 ```
 
-I do update the look once in a while also I will update the dates and times for all the crossings when they are about to expire.
-Gate 30 line 2(direct) and 30.1(retrograde) had the wrong longitude .. now fixed  
+I update the look occasionally and refresh the dates and times for all crossings when they are about to expire.
+Gate 30 line 2 (direct) and 30.1 (retrograde) had the wrong longitude — now fixed.
 
+The app checks for new activations every 50 milliseconds, so notifications trigger almost exactly at the scheduled time, down to the milliseconds recorded in the JSON files.
 Buy me a beer [via PayPal](https://paypal.me/EJohnson275)
 
 
