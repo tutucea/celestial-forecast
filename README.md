@@ -85,7 +85,8 @@ npm start
 I update the look occasionally and refresh the dates and times for all crossings when they are about to expire.
 Gate 30 line 2 (direct) and 30.1 (retrograde) had the wrong longitude — now fixed.
 
-The app checks for new activations every 50 milliseconds, so notifications trigger almost exactly at the scheduled time, down to the milliseconds recorded in the JSON files.
+The app checks for new activations every 50 milliseconds, so notifications trigger almost exactly at the scheduled time, down to the milliseconds recorded in the JSON files. If you do not wish this you can edit renderer1.js all the way to the bootom of it and replace 50 with 1000.
+
 Buy me a beer [via PayPal](https://paypal.me/EJohnson275)
 
 
