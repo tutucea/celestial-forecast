@@ -87,6 +87,8 @@ Gate 30 line 2 (direct) and 30.1 (retrograde) had the wrong longitude — now fi
 
 The app checks for new activations every 50 milliseconds, so notifications trigger almost exactly at the scheduled time, down to the milliseconds recorded in the JSON files. If you do not wish this you can edit renderer1.js all the way to the bootom of it and replace 50 with 1000.
 
+Moon followers i have created moon_schedule.ics that can be loaded  with iCal or Google calendar and create your own allerts etc :)
+
 Buy me a beer [via PayPal](https://paypal.me/EJohnson275)
 
 
