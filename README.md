@@ -59,7 +59,7 @@ Celestial-Forecast Screenshot - https://ibb.co/9H879TWp
    ```bash
    npm install luxon
    ```
-   https://ibb.co/LD8mXJ7J
+   https://ibb.co/LD8mXJ7J or https://ibb.co/Kx2hjh8S
 
 8. ### Accuracy 
 Please let me know if you see any discrepancies but before check this [Swiss Ephemeris - Swetest](https://www.astro.com/swisseph/swetest.htm)  or 
