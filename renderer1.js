@@ -10,6 +10,11 @@ const oppositeGates = {
 };
 
 const lastActivations = {};
+const lastTransitionalNotifications = {}; // Tracks the longitude-based sun transitional notifications
+const lastSpecialNotifications = {}; // Tracks custom date-time based notifications
+
+const SPECIAL_MUTATION_TIME = new Date('2027-02-15T22:10:00Z').getTime();
+
 const planetNames = [
   'moon', 'sun', 'nodes', 'mercury', 'venus', 'mars',
   'jupiter', 'saturn', 'uranus', 'neptune', 'pluto', 'chiron'
@@ -31,7 +36,7 @@ const planetDisplayNames = {
   'earth': 'Earth'
 };
 let isCountdownHidden = false;
-let isNotificationsEnabled = true; // Track notification state
+let isNotificationsEnabled = true;
 
 function findOppositeGate(gate) {
   const numericGate = parseInt(gate.toString().replace(/\D/g, ''), 10);
@@ -49,6 +54,9 @@ async function updateDisplay(isFirstRun = false) {
   try {
     const now = new Date();
     document.getElementById('datetime').textContent = formatTime(now);
+
+    // --- Check for Special One-Off Notifications ---
+    processSpecialNotification(now, isFirstRun);
 
     const schedulePromises = planetNames.map(p => {
       const method = `get${p.charAt(0).toUpperCase() + p.slice(1)}Schedule`;
@@ -80,6 +88,9 @@ async function updateDisplay(isFirstRun = false) {
         }))
         .filter(activation => activation.gate !== null);
       processSchedule(earthSchedule, 'earth', now, sunSchedule, isFirstRun);
+      
+      // --- Sun Transitional Profile Check (Last 7.5 arcminutes / 0.125 degrees) ---
+      processSunTransitionalNotification(sunSchedule, now, isFirstRun);
     } else {
       console.warn('renderer1.js: No sun schedule available for earth');
     }
@@ -100,6 +111,33 @@ async function updateDisplay(isFirstRun = false) {
   } catch (error) {
     console.error('renderer1.js: Error during display update:', error);
   }
+}
+
+function processSpecialNotification(now, isFirstRun) {
+  if (!isNotificationsEnabled) return;
+
+  const key = 'great-mutation-sixth-line-shift-2027';
+  if (now.getTime() >= SPECIAL_MUTATION_TIME) {
+    if (isFirstRun) {
+      lastSpecialNotifications[key] = true;
+    } else if (!lastSpecialNotifications[key]) {
+      lastSpecialNotifications[key] = true;
+      showCustomNotification('Special Event', 'great mutation - sixth line shift');
+    }
+  }
+}
+
+function showCustomNotification(title, bodyMessage) {
+  if (!isNotificationsEnabled) return;
+
+  console.log(`renderer1.js: Showing custom notification: ${title} - ${bodyMessage}`);
+  window.electronAPI.showNotification({
+    title: title,
+    body: bodyMessage
+  });
+
+  const audio = new Audio('./notification.mp3');
+  audio.play().catch(err => console.error('renderer1.js: Audio playback failed:', err));
 }
 
 function processSchedule(schedule, prefix, now, syncedSchedule = null, isFirstRun = false) {
@@ -217,11 +255,77 @@ function processSchedule(schedule, prefix, now, syncedSchedule = null, isFirstRu
   }
 }
 
+function processSunTransitionalNotification(sunSchedule, now, isFirstRun) {
+  if (!isNotificationsEnabled) return;
+
+  let currentActivation = null;
+  let nextActivation = null;
+
+  for (let i = 0; i < sunSchedule.length; i++) {
+    const activationTime = parseTimestamp(sunSchedule[i].timestamp);
+    if (activationTime && activationTime <= now) {
+      currentActivation = sunSchedule[i];
+      nextActivation = sunSchedule[i + 1] || null;
+    }
+  }
+
+  if (!currentActivation || !nextActivation) return;
+  if (currentActivation.longitude === undefined || nextActivation.longitude === undefined) return;
+
+  const t1 = parseTimestamp(currentActivation.timestamp).getTime();
+  const t2 = parseTimestamp(nextActivation.timestamp).getTime();
+  const lon1 = currentActivation.longitude;
+  let lon2 = nextActivation.longitude;
+
+  // Handle potential 360/0 degree wrap-around
+  if (lon2 < lon1) {
+    lon2 += 360;
+  }
+  
+  let currentLon = lon1;
+  const totalLonSpan = lon2 - lon1;
+  const totalTimeSpan = t2 - t1;
+
+  if (totalLonSpan > 0 && totalTimeSpan > 0) {
+    const elapsedFraction = (now.getTime() - t1) / totalTimeSpan;
+    currentLon = lon1 + (totalLonSpan * elapsedFraction);
+  }
+
+  // The 7.5 arcminute mark is 0.125 degrees before the next activation longitude
+  const targetLon = lon2 - 0.125;
+  const transitionKey = `sun-transitional-${nextActivation.timestamp}`;
+
+  if (currentLon >= targetLon && now.getTime() < t2) {
+    if (isFirstRun) {
+      lastTransitionalNotifications[transitionKey] = true;
+    } else if (!lastTransitionalNotifications[transitionKey]) {
+      lastTransitionalNotifications[transitionKey] = true;
+      showSunTransitionalNotification(nextActivation);
+    }
+  }
+}
+
+function showSunTransitionalNotification(nextActivation) {
+  if (!isNotificationsEnabled) return;
+  
+  const cleanGate = parseInt(nextActivation.gate.toString().replace(/\D/g, ''), 10);
+  const message = `Sun switched to transitional profile heading into Gate ${cleanGate}, line ${nextActivation.line}`;
+  
+  console.log(`renderer1.js: Showing Sun Transitional Notification: ${message}`);
+  window.electronAPI.showNotification({
+    title: 'Sun Transitional Profile',
+    body: message
+  });
+  
+  const audio = new Audio('./notification.mp3');
+  audio.play().catch(err => console.error('renderer1.js: Audio playback failed:', err));
+}
+
 function showNotification(prefix, activation) {
-  if (!isNotificationsEnabled) return; // Skip if notifications are disabled
+  if (!isNotificationsEnabled) return;
   const planetName = planetDisplayNames[prefix] || prefix.toUpperCase();
   const message = `${planetName} moved to ${activation.gate}, line ${activation.line}`;
-  console.log(`renderer1.js: Showing notification: ${planetName} - ${message}`);
+  console.log(`renderer1.js: Showing notification: ${planetName} ${message}`);
   window.electronAPI.showNotification({
     title: planetName,
     body: message
