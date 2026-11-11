@@ -74,6 +74,7 @@ sudo chown root chrome-sandbox && sudo chmod 4755 chrome-sandbox
 ### Notes
 If you wish to change the notification sound, create a folder named "sounds" inside the directory where all the files are located, and place a file named notification.mp3 inside it.
 You can also use your own notification sound—just make sure to name it notification.mp3.
+I've added notifications for when the transitional profiles are happening as in 1/4, 2/5.... I haven't tested to see if they correct .. also if they too annoying they can be removed. Notification for when the "Great Mutation" happens also added.
 
 
 Every time you want to run the program, open a terminal and navigate to the project directory:
