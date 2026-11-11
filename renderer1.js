@@ -180,11 +180,16 @@ function processSchedule(schedule, prefix, now, syncedSchedule = null, isFirstRu
     }
   }
 
+  if (!currentActivation && schedule.length > 0) {
+    currentActivation = schedule[0];
+  }
+
   const activationKey = currentActivation ? `${currentActivation.gate}-${currentActivation.line}-${currentActivation.timestamp}` : null;
+  
   if (currentActivation && isNotificationsEnabled) {
     if (isFirstRun) {
       lastActivations[prefix] = activationKey;
-    } else if (lastActivations[prefix] !== activationKey) {
+    } else if (activationKey && lastActivations[prefix] !== activationKey) {
       lastActivations[prefix] = activationKey;
       showNotification(prefix, currentActivation);
     }
@@ -372,4 +377,4 @@ document.body.addEventListener('click', async (event) => {
 
 initializeNotificationState();
 updateDisplay(true);
-setInterval(() => updateDisplay(false), 50);
+setInterval(() => updateDisplay(false), 1000);
