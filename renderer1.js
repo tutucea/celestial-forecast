@@ -10,7 +10,6 @@ const oppositeGates = {
 };
 
 const lastActivations = {};
-const lastTransitionalNotifications = {}; // Tracks the longitude-based sun transitional notifications
 const lastSpecialNotifications = {}; // Tracks custom date-time based notifications
 
 const SPECIAL_MUTATION_TIME = new Date('2027-02-15T22:10:00Z').getTime();
@@ -88,9 +87,6 @@ async function updateDisplay(isFirstRun = false) {
         }))
         .filter(activation => activation.gate !== null);
       processSchedule(earthSchedule, 'earth', now, sunSchedule, isFirstRun);
-      
-      // --- Sun Transitional Profile Check (Last 7.5 arcminutes / 0.125 degrees) ---
-      processSunTransitionalNotification(sunSchedule, now, isFirstRun);
     } else {
       console.warn('renderer1.js: No sun schedule available for earth');
     }
@@ -253,72 +249,6 @@ function processSchedule(schedule, prefix, now, syncedSchedule = null, isFirstRu
     planetNameElement.classList.add('hidden-planet-name');
     percentageElement.classList.add('hidden-percentage');
   }
-}
-
-function processSunTransitionalNotification(sunSchedule, now, isFirstRun) {
-  if (!isNotificationsEnabled) return;
-
-  let currentActivation = null;
-  let nextActivation = null;
-
-  for (let i = 0; i < sunSchedule.length; i++) {
-    const activationTime = parseTimestamp(sunSchedule[i].timestamp);
-    if (activationTime && activationTime <= now) {
-      currentActivation = sunSchedule[i];
-      nextActivation = sunSchedule[i + 1] || null;
-    }
-  }
-
-  if (!currentActivation || !nextActivation) return;
-  if (currentActivation.longitude === undefined || nextActivation.longitude === undefined) return;
-
-  const t1 = parseTimestamp(currentActivation.timestamp).getTime();
-  const t2 = parseTimestamp(nextActivation.timestamp).getTime();
-  const lon1 = currentActivation.longitude;
-  let lon2 = nextActivation.longitude;
-
-  // Handle potential 360/0 degree wrap-around
-  if (lon2 < lon1) {
-    lon2 += 360;
-  }
-  
-  let currentLon = lon1;
-  const totalLonSpan = lon2 - lon1;
-  const totalTimeSpan = t2 - t1;
-
-  if (totalLonSpan > 0 && totalTimeSpan > 0) {
-    const elapsedFraction = (now.getTime() - t1) / totalTimeSpan;
-    currentLon = lon1 + (totalLonSpan * elapsedFraction);
-  }
-
-  // The 7.5 arcminute mark is 0.125 degrees before the next activation longitude
-  const targetLon = lon2 - 0.125;
-  const transitionKey = `sun-transitional-${nextActivation.timestamp}`;
-
-  if (currentLon >= targetLon && now.getTime() < t2) {
-    if (isFirstRun) {
-      lastTransitionalNotifications[transitionKey] = true;
-    } else if (!lastTransitionalNotifications[transitionKey]) {
-      lastTransitionalNotifications[transitionKey] = true;
-      showSunTransitionalNotification(nextActivation);
-    }
-  }
-}
-
-function showSunTransitionalNotification(nextActivation) {
-  if (!isNotificationsEnabled) return;
-  
-  const cleanGate = parseInt(nextActivation.gate.toString().replace(/\D/g, ''), 10);
-  const message = `Sun switched to transitional profile heading into Gate ${cleanGate}, line ${nextActivation.line}`;
-  
-  console.log(`renderer1.js: Showing Sun Transitional Notification: ${message}`);
-  window.electronAPI.showNotification({
-    title: 'Sun Transitional Profile',
-    body: message
-  });
-  
-  const audio = new Audio('./notification.mp3');
-  audio.play().catch(err => console.error('renderer1.js: Audio playback failed:', err));
 }
 
 function showNotification(prefix, activation) {
